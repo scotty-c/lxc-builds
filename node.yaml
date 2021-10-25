@@ -620,7 +620,9 @@ actions:
     su scott -c "curl -o /home/scott/install.sh https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh"
     su scott -c "sh /home/scott/install.sh --unattended"
     rm -rf /home/scott/install.sh
-    chsh -s $(which zsh) scott 
+    chsh -s $(which zsh) scott
+    rm -rf /home/scott/.zshrc
+    su scott -c "curl -o /home/scott/.zshrc https://raw.githubusercontent.com/scotty-c/lxc-builds/main/zsh" 
     
     # Install Docker
     curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg

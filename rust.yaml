@@ -613,6 +613,16 @@ actions:
     # Get key from GitHub
     su scott -c "ssh-import-id gh:scotty-c"
 
+    # Install zsh 
+    sudo apt update -y
+    sudo apt install zsh zsh-autosuggestions zsh-syntax-highlighting fonts-powerline -y
+    su scott -c "curl -o /home/scott/install.sh https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh"
+    su scott -c "sh /home/scott/install.sh --unattended"
+    rm -rf /home/scott/install.sh
+    chsh -s $(which zsh) scott
+    rm -rf /home/scott/.zshrc
+    su scott -c "curl -o /home/scott/.zshrc https://raw.githubusercontent.com/scotty-c/lxc-builds/main/zsh"
+    
     # Install Docker
     curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
     echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu focal stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null 
