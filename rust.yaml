@@ -465,6 +465,7 @@ packages:
   - packages:
     - fuse
     - language-pack-en
+    - git
     - openssh-client
     - sudo
     - vim

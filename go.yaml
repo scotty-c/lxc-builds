@@ -464,6 +464,7 @@ packages:
   sets:
   - packages:
     - fuse
+    - git
     - language-pack-en
     - openssh-client
     - sudo
