@@ -457,6 +457,14 @@ files:
   variants:
     - default
 
+- path: /etc/sshkeys/
+  generator: copy
+  source: sources/sshkeys/
+  variants:
+    - default
+    - cloud 
+    - vm  
+
 packages:
   manager: apt
   update: true
@@ -464,7 +472,7 @@ packages:
   sets:
   - packages:
     - fuse
-    - git
+    - git  
     - language-pack-en
     - openssh-client
     - sudo
@@ -601,6 +609,7 @@ actions:
     # Create the ubuntu user account
     getent group sudo >/dev/null 2>&1 || groupadd --system sudo
     useradd --create-home -s /bin/bash -G sudo -U scott
+    echo "scott  ALL=(ALL) NOPASSWD:ALL" | sudo tee /etc/sudoers.d/scott
 
   variants:
   - default
@@ -613,17 +622,17 @@ actions:
     
     # Get key from GitHub
     su scott -c "ssh-import-id gh:scotty-c"
-
+    
     # Install zsh 
-    sudo apt update -y
+    sudo apt update -y 
     sudo apt install zsh zsh-autosuggestions zsh-syntax-highlighting fonts-powerline -y
     su scott -c "curl -o /home/scott/install.sh https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh"
     su scott -c "sh /home/scott/install.sh --unattended"
     rm -rf /home/scott/install.sh
     chsh -s $(which zsh) scott
     rm -rf /home/scott/.zshrc
-    su scott -c "curl -o /home/scott/.zshrc https://raw.githubusercontent.com/scotty-c/lxc-builds/main/zsh"
-
+    su scott -c "curl -o /home/scott/.zshrc https://raw.githubusercontent.com/scotty-c/lxc-builds/main/sources/conf/zsh" 
+    
     # Install Docker
     curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
     echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu focal stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null 
@@ -634,8 +643,11 @@ actions:
     # Install Go
     wget https://golang.org/dl/go1.17.2.linux-amd64.tar.gz
     rm -rf /usr/local/go && tar -C /usr/local -xzf go1.17.2.linux-amd64.tar.gz
-    su scott -c "echo 'export PATH=$PATH:/usr/local/go/bin' >> home/scott/.profile"
-
+    su scott -c "echo 'export PATH=$PATH:/usr/local/go/bin' >> home/scott/.profile" 
+    
+    # Install Git Config
+    su scott -c "curl -o /home/scott/.gitconfig https://raw.githubusercontent.com/scotty-c/lxc-builds/main/sources/conf/gitconfig"
+    
     # Enable systemd-networkd
     systemctl enable systemd-networkd
   releases:
@@ -676,6 +688,21 @@ actions:
     sed -i "s#root=[^ ]*#root=/dev/sda2#g" /boot/grub/grub.cfg
   types:
   - vm
+
+
+- trigger: post-files
+  action: |-
+    #!/bin/sh
+    set -eux
+
+    mv /etc/sshkeys/id_rsa /home/scott/.ssh/
+    mv /etc/sshkeys/id_rsa.pub /home/scott/.ssh/
+    chown -R scott:scott /home/scott/.ssh/
+    su scott -c "chmod 600 /home/scott/.ssh/id_rsa"
+  variants:
+  - default
+  - vm
+  - cloud  
 
 - trigger: post-packages
   action: |-
