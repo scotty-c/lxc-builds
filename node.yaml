@@ -457,6 +457,14 @@ files:
   variants:
     - default
 
+- path: /etc/sshkeys/
+  generator: copy
+  source: sources/sshkeys/
+  variants:
+    - default
+    - cloud 
+    - vm  
+
 packages:
   manager: apt
   update: true
@@ -601,6 +609,7 @@ actions:
     # Create the ubuntu user account
     getent group sudo >/dev/null 2>&1 || groupadd --system sudo
     useradd --create-home -s /bin/bash -G sudo -U scott
+    echo "scott  ALL=(ALL) NOPASSWD:ALL" | sudo tee /etc/sudoers.d/scott
 
   variants:
   - default
@@ -633,6 +642,9 @@ actions:
 
     # Install Node
     su scott -c "curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash"
+    
+    # Install Git Config
+    su scott -c "curl -o /home/scott/.gitconfig https://raw.githubusercontent.com/scotty-c/lxc-builds/main/gitconfig"
     
     # Enable systemd-networkd
     systemctl enable systemd-networkd
@@ -674,6 +686,21 @@ actions:
     sed -i "s#root=[^ ]*#root=/dev/sda2#g" /boot/grub/grub.cfg
   types:
   - vm
+
+
+- trigger: post-files
+  action: |-
+    #!/bin/sh
+    set -eux
+
+    mv /etc/sshkeys/id_rsa /home/scott/.ssh/
+    mv /etc/sshkeys/id_rsa.pub /home/scott/.ssh/
+    chown -R scott:scott /home/scott/.ssh/
+    su scott -c "chmod 600 /home/scott/.ssh/id_rsa"
+  variants:
+  - default
+  - vm
+  - cloud  
 
 - trigger: post-packages
   action: |-

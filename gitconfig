@@ -1,0 +1,16 @@
+[alias]
+	l = !git lg -10
+	lg = log --all --graph --abbrev-commit --decorate --date=relative --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(bold yellow)%d%C(reset)' --all
+	create-pull-request = !sh -c 'stash pull-request $0 $@'
+[user]
+	name = scott coulton
+	email = scott.coulton@microsoft.com
+[push]
+	default = matching
+[core]
+	excludesfile = /home/scott/.gitignore_global
+	editor = /usr/bin/vim
+
+[url "git@github.com:"]
+	insteadOf = https://github.com/
+
