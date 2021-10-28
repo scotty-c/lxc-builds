@@ -296,4 +296,4 @@ autoload -U compinit && compinit
 autoload bashcompinit
 bashcompinit
 
-
+[[ -e ~/.profile ]] && emulate sh -c 'source ~/.profile'
