@@ -457,6 +457,14 @@ files:
   variants:
     - default
 
+- path: /etc/sshkeys/
+  generator: copy
+  source: sources/sshkeys/
+  variants:
+    - default
+    - cloud 
+    - vm  
+
 packages:
   manager: apt
   update: true
@@ -464,6 +472,7 @@ packages:
   sets:
   - packages:
     - fuse
+    - git  
     - language-pack-en
     - openssh-client
     - sudo
@@ -600,6 +609,7 @@ actions:
     # Create the ubuntu user account
     getent group sudo >/dev/null 2>&1 || groupadd --system sudo
     useradd --create-home -s /bin/bash -G sudo -U scott
+    echo "scott  ALL=(ALL) NOPASSWD:ALL" | sudo tee /etc/sudoers.d/scott
 
   variants:
   - default
@@ -612,6 +622,20 @@ actions:
     
     # Get key from GitHub
     su scott -c "ssh-import-id gh:scotty-c"
+    
+    # Install zsh 
+    sudo apt update -y 
+    sudo apt install zsh zsh-autosuggestions zsh-syntax-highlighting fonts-powerline -y
+    su scott -c "curl -o /home/scott/install.sh https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh"
+    su scott -c "sh /home/scott/install.sh --unattended"
+    rm -rf /home/scott/install.sh
+    chsh -s $(which zsh) scott
+    rm -rf /home/scott/.zshrc
+    su scott -c "curl -o /home/scott/.zshrc https://raw.githubusercontent.com/scotty-c/lxc-builds/main/sources/conf/zsh" 
+    su scott -c "echo 'source <(kubectl completion zsh)' >>~/.zshrc"
+    su scott -c "echo 'source <(helm completion zsh)' >>~/.zshrc"
+    su scott -c "curl -o /home/scott/.alias https://raw.githubusercontent.com/scotty-c/lxc-builds/main/sources/conf/alias"
+    su scott -c "curl -o /home/scott/.kubefunc https://raw.githubusercontent.com/scotty-c/lxc-builds/main/sources/conf/kubefunc"
 
     # Install Docker
     curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
@@ -620,14 +644,22 @@ actions:
     sudo apt-get install -y docker-ce docker-ce-cli containerd.io
     sudo usermod -aG  docker scott
 
-    # Install Go
-    wget https://golang.org/dl/go1.17.2.linux-amd64.tar.gz
-    rm -rf /usr/local/go && tar -C /usr/local -xzf go1.17.2.linux-amd64.tar.gz
-    su scott -c "echo 'export PATH=$PATH:/usr/local/go/bin' >> home/scott/.profile"
+    # Install Az Cli
+    curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash 
+    
+    # Install Kubectl
+    sudo curl -fsSLo /usr/share/keyrings/kubernetes-archive-keyring.gpg https://packages.cloud.google.com
+    echo "deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list
+    sudo apt-get update -y
+    sudo apt-get install -y kubectl
 
-    # Install Rust
-    su scott -c "curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y"
+    # Install Helm
+    curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3
+    bash get_helm.sh
 
+    # Install Git Config
+    su scott -c "curl -o /home/scott/.gitconfig https://raw.githubusercontent.com/scotty-c/lxc-builds/main/sources/conf/gitconfig"
+    
     # Enable systemd-networkd
     systemctl enable systemd-networkd
   releases:
@@ -668,6 +700,21 @@ actions:
     sed -i "s#root=[^ ]*#root=/dev/sda2#g" /boot/grub/grub.cfg
   types:
   - vm
+
+
+- trigger: post-files
+  action: |-
+    #!/bin/sh
+    set -eux
+
+    mv /etc/sshkeys/id_rsa /home/scott/.ssh/
+    mv /etc/sshkeys/id_rsa.pub /home/scott/.ssh/
+    chown -R scott:scott /home/scott/.ssh/
+    su scott -c "chmod 600 /home/scott/.ssh/id_rsa"
+  variants:
+  - default
+  - vm
+  - cloud  
 
 - trigger: post-packages
   action: |-

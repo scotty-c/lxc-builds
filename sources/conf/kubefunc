@@ -1,0 +1,180 @@
+#!/bin/bash
+# Bash functions 
+
+
+kube_az_creds () {
+if [[ "$@" == "k8s" ]]
+then
+    RS=k8s
+    CTX=personal-cluster
+    echo "Setting kubectl with personal creds"
+    az account set --subscription "Visual Studio Enterprise"
+else
+    RS=k8s-shared
+    CTX=cda-cluster
+    echo "Setting kubectl with shared account creds"
+    az account set --subscription "ca-sccoulto-demo-test"
+fi
+az aks get-credentials --resource-group $RS --name k8s --admin --overwrite-existing
+kubectx $CTX=k8s-admin
+}
+
+kube_az () {
+if [[ "$@" == "k8s" ]]
+then
+    RS=k8s
+    CTX=personal-cluster
+    NODES=3
+    echo "Using personal account to deploy the k8s cluster"
+    az account set --subscription "Visual Studio Enterprise"
+else
+    RS=k8s-shared
+    CTX=cda-cluster
+    NODES=3
+    echo "Using shared account to deploy the k8s cluster"
+    az account set --subscription "ca-sccoulto-demo-test"
+fi
+
+az aks create --resource-group $RS \
+  --name k8s \
+  --generate-ssh-keys \
+  --node-count $NODES \
+  --kubernetes-version 1.21.2 \
+  --node-vm-size Standard_DS2_v2 \
+  --zones 1 2 3 \
+  --load-balancer-sku standard \
+  --network-plugin azure \
+  --network-policy calico
+az aks get-credentials --resource-group $RS --name k8s --admin --overwrite-existing
+kubectx $CTX=k8s-admin 
+	# 
+}
+
+kube_az_del () {
+if [[ "$@" == "k8s" ]]
+then
+    RS=k8s
+    CTX=personal-cluster
+    echo "Deleting cluster from personal account"
+    az account set --subscription "Visual Studio Enterprise"
+else
+    RS=k8s-shared
+    CTX=cda-cluster
+    echo "Deleting cluster from shared account"
+    az account set --subscription "ca-sccoulto-demo-test"
+fi
+
+az aks delete -g $RS -n k8s
+kubectl config delete-context $CTX
+kubectl config delete-cluster k8s
+}
+
+
+kube_az_stop () {
+if [[ "$@" == "k8s" ]]
+then
+    RS=k8s
+    CTX=personal-cluster
+    echo "Stopping cluster from personal account"
+    az account set --subscription "Visual Studio Enterprise"
+else
+    RS=k8s-shared
+    CTX=cda-cluster
+    echo "Stopping cluster from shared account"
+    az account set --subscription "ca-sccoulto-demo-test"
+fi
+
+az aks stop -g $RS -n k8s
+}
+
+kube_az_start () {
+if [[ "$@" == "k8s" ]]
+then
+    RS=k8s
+    CTX=personal-cluster
+    echo "Stopping cluster from personal account"
+    az account set --subscription "Visual Studio Enterprise"
+else
+    RS=k8s-shared
+    CTX=cda-cluster
+    echo "Stopping cluster from shared account"
+    az account set --subscription "ca-sccoulto-demo-test"
+fi
+
+az aks start -g $RS -n k8s
+}
+
+
+kube_az_ssh () {
+if [[ "$@" == "k8s" ]]
+then
+    RS=k8s
+    CTX=personal-cluster
+    echo "Creating ssh connection to personal account"
+    az account set --subscription "Visual Studio Enterprise"
+else
+    RS=k8s-shared
+    CTX=cda-cluster
+    echo "Creating ssh connection to shared account cluster"
+    az account set --subscription "ca-sccoulto-demo-test"
+fi
+NG=$(az aks show --resource-group $RS --name k8s --query nodeResourceGroup -o tsv)
+NODE=$(az vm list --resource-group $NG -o json |  jq  -r '.[0] .osProfile .computerName')
+az vm user update \
+  --resource-group $NG \
+  --name $NODE \
+  --username azureuser \
+  --ssh-key-value ~/.ssh/id_rsa.pub
+
+mate-terminal -e "kubectl run -it --rm aks-ssh --image=debian"
+while false;
+do
+     kubectl get pods $POD_NAME -o json | jq .status.phase | grep "Running"]
+    echo "Waiting for pod to start"
+    sleep 10
+done
+sleep 5
+POD_NAME=$(kubectl get po -o json | jq -r '.items | sort_by(.spec.nodeName)[] | [.metadata.name] | @tsv')
+sleep 10
+kubectl cp ~/.ssh/id_rsa $POD_NAME:/id_rsa
+
+MACHINE_IP=$(az vm list-ip-addresses --resource-group $NG --name $NODE -o json | jq -r '.[].virtualMachine.network.privateIpAddresses | @tsv')
+
+echo "Run the below commands in the new terminal" 
+echo "apt-get update && apt-get install openssh-client -y && chmod 0600 id_rsa"
+echo "ssh -i id_rsa azureuser@$MACHINE_IP"
+
+}
+
+
+kube_az_pvc () {
+cat <<EOF | kubectl apply -f -
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: aks-volume-claim
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+EOF
+}
+
+kube_az_dashboard () {
+if [[ "$@" == "k8s" ]]
+then
+    RS=k8s
+    CTX=personal-cluster
+    echo "Creating kubectl proxy connection to personal account"
+    az account set --subscription "Visual Studio Enterprise"
+else
+    RS=k8s-shared
+    CTX=cda-cluster
+    echo "Creating kubectl proxy connection to shared account cluster"
+    az account set --subscription "ca-sccoulto-demo-test"
+fi
+kubectl create clusterrolebinding kubernetes-dashboard --clusterrole=cluster-admin --serviceaccount=kube-system:kubernetes-dashboard
+az aks browse --resource-group $RS --name k8s
+}
