@@ -681,6 +681,7 @@ actions:
     set -eux
     
     # Install Microk8s
+    systemctl start snapd.service
     sudo snap install microk8s --classic --channel=1.22
     mkdir -p /home/scott/.kube/
     sudo usermod -a -G microk8s scott
