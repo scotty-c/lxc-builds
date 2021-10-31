@@ -477,6 +477,7 @@ packages:
     - openssh-client
     - sudo
     - vim
+    - snapd
     - openssh-server
     - ssh-import-id
     - wget 
