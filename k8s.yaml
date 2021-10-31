@@ -679,21 +679,6 @@ actions:
   action: |-
     #!/bin/sh
     set -eux
-    
-    # Install Microk8s
-    systemctl start snapd.service
-    sudo snap install microk8s --classic --channel=1.22
-    mkdir -p /home/scott/.kube/
-    sudo usermod -a -G microk8s scott
-    sudo chown -f -R scott ~/.kube
-    sudo microk8s config > /home/scott/.kube/config
-  types:
-    - vm
-
-- trigger: post-packages
-  action: |-
-    #!/bin/sh
-    set -eux
 
     # Make sure the locale is built and functional
     locale-gen en_US.UTF-8
