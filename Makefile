@@ -10,6 +10,8 @@ node:
 
 k8s:
 	sudo distrobuilder build-lxd -o image.architecture=x86_64 -o image.release=impish -o image.variant=cloud --import-into-lxd="k8s"  k8s.yaml	
+k8s-vm:
+	sudo distrobuilder build-lxd -o image.architecture=x86_64 -o image.release=impish -o image.variant=cloud --import-into-lxd="k8s-vm" --vm  k8s.yaml
 
 ubuntu-vm:
 	sudo distrobuilder build-lxd -o image.architecture=x86_64 -o image.release=impish -o image.variant=cloud --import-into-lxd="21.04" --vm  ubuntu.yaml
