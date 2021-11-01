@@ -644,7 +644,6 @@ actions:
 
     # Install Node
     su scott -c "curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash"
-    
     # Install Git Config
     su scott -c "curl -o /home/scott/.gitconfig https://raw.githubusercontent.com/scotty-c/lxc-builds/main/sources/conf/gitconfig"
     

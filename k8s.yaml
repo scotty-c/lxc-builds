@@ -666,6 +666,18 @@ actions:
     rm -rf /usr/local/go && tar -C /usr/local -xzf go1.17.2.linux-amd64.tar.gz
     su scott -c "echo 'export PATH=$PATH:/usr/local/go/bin' >> home/scott/.profile" 
     
+    # Install Scrript for Microsk8s
+    sudo tee -a /home/scott/install.sh <<'EOF'
+    echo "# microk8s..."
+    sudo snap install microk8s --classic --channel=1.22
+    mkdir -p $HOME/.kube/
+    sudo usermod -a -G microk8s $USER
+    sudo chown -f -R $USER ~/.kube
+    sudo microk8s config > $HOME/.kube/config
+    echo 'source <(kubectl completion zsh)' >>~/.zshrc
+    echo 'source <(helm completion zsh)' >>~/.zshrc    
+    EOF
+    
     # Enable systemd-networkd
     systemctl enable systemd-networkd
   releases:
