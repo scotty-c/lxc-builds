@@ -9,7 +9,7 @@ node:
 	sudo distrobuilder build-lxd -o image.architecture=x86_64 -o image.release=impish -o image.variant=cloud --import-into-lxd="node"  node.yaml
 
 k8s:
-	sudo distrobuilder build-lxd -o image.architecture=x86_64 -o image.release=impish -o image.variant=cloud --import-into-lxd="k8s"  k8s.yaml	
+	sudo distrobuilder build-lxd -o image.architecture=x86_64 -o image.release=focal -o image.variant=cloud --import-into-lxd="k8s"  k8s.yaml	
 k8s-vm:
 	sudo distrobuilder build-lxd -o image.architecture=x86_64 -o image.release=impish -o image.variant=cloud --import-into-lxd="k8s-vm" --vm  k8s.yaml
 
