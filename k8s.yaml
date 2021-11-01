@@ -677,6 +677,8 @@ actions:
     echo 'source <(kubectl completion zsh)' >>~/.zshrc
     echo 'source <(helm completion zsh)' >>~/.zshrc    
     EOF
+    sudo microk8s.enable dns storage
+    chmod +x /home/scott/install.sh
     
     # Enable systemd-networkd
     systemctl enable systemd-networkd
