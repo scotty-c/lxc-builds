@@ -679,9 +679,10 @@ actions:
     sudo microk8s config > $HOME/.kube/config
     echo 'source <(kubectl completion zsh)' >>~/.zshrc
     echo 'source <(helm completion zsh)' >>~/.zshrc    
-    EOF
     sudo microk8s.enable dns storage
+    EOF
     ) > /home/scott/install.sh
+    
     chmod +x /home/scott/install.sh
     
     # Enable systemd-networkd
