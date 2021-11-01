@@ -667,7 +667,10 @@ actions:
     su scott -c "echo 'export PATH=$PATH:/usr/local/go/bin' >> home/scott/.profile" 
     
     # Install Scrript for Microsk8s
-    sudo tee -a /home/scott/install.sh <<'EOF'
+    (
+    cat << EOF
+    #!/bin/sh
+    set -eux
     echo "# microk8s..."
     sudo snap install microk8s --classic --channel=1.22
     mkdir -p $HOME/.kube/
@@ -678,6 +681,7 @@ actions:
     echo 'source <(helm completion zsh)' >>~/.zshrc    
     EOF
     sudo microk8s.enable dns storage
+    ) > /home/scott/install.sh
     chmod +x /home/scott/install.sh
     
     # Enable systemd-networkd
