@@ -672,15 +672,12 @@ actions:
     #!/bin/sh
     set -eux
     
-    export HOME='/home/scott'
-    export USER='scott'
-    
     echo "# microk8s..."
     sudo snap install microk8s --classic --channel=1.22
-    mkdir -p $HOME/.kube/
-    sudo usermod -a -G microk8s $USER
-    sudo chown -f -R $USER ~/.kube
-    sudo microk8s config > $HOME/.kube/config
+    mkdir -p /home/scott/.kube/
+    sudo usermod -a -G microk8s scott
+    sudo chown -f -R scott ~/.kube
+    sudo microk8s config > /home/scott/.kube/config
     echo 'source <(kubectl completion zsh)' >>~/.zshrc
     echo 'source <(helm completion zsh)' >>~/.zshrc    
     sudo microk8s.enable dns storage
