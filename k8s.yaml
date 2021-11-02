@@ -678,6 +678,7 @@ actions:
     sudo usermod -a -G microk8s scott
     sudo chown -f -R scott ~/.kube
     sudo microk8s config > /home/scott/.kube/config
+    su scott -c "chmod 600 /home/scott/.kube/config"
     echo 'source <(kubectl completion zsh)' >>~/.zshrc
     echo 'source <(helm completion zsh)' >>~/.zshrc    
     sudo microk8s.enable dns storage
