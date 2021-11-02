@@ -671,6 +671,10 @@ actions:
     cat << EOF
     #!/bin/sh
     set -eux
+    
+    export HOME='/home/scott'
+    export USER='scott'
+    
     echo "# microk8s..."
     sudo snap install microk8s --classic --channel=1.22
     mkdir -p $HOME/.kube/
@@ -684,7 +688,13 @@ actions:
     ) > /home/scott/install.sh
     
     chmod +x /home/scott/install.sh
-    
+
+    # Install Kubectx
+    wget https://github.com/ahmetb/kubectx/releases/download/v0.9.4/kubectx
+    wget https://github.com/ahmetb/kubectx/releases/download/v0.9.4/kubens
+    chmod +x kubectx kubens
+    sudo mv kubectx kubens /usr/local/bin/
+
     # Enable systemd-networkd
     systemctl enable systemd-networkd
   releases:
