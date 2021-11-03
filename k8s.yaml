@@ -658,7 +658,7 @@ actions:
     # Install Helm
     curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3
     bash get_helm.sh
-    echo 'source <(helm completion zsh)' >>~/home/scott/.zshrc   
+    echo 'source <(helm completion zsh)' >>/home/scott/.zshrc   
 
     # Install Git Config
     su scott -c "curl -o /home/scott/.gitconfig https://raw.githubusercontent.com/scotty-c/lxc-builds/main/sources/conf/gitconfig"
