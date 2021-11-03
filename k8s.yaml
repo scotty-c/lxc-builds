@@ -653,10 +653,12 @@ actions:
     echo "deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list
     sudo apt-get update -y
     sudo apt-get install -y kubectl
+    echo 'source <(kubectl completion zsh)' >>/home/scott/.zshrc
 
     # Install Helm
     curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3
     bash get_helm.sh
+    echo 'source <(helm completion zsh)' >>~/home/scott/.zshrc   
 
     # Install Git Config
     su scott -c "curl -o /home/scott/.gitconfig https://raw.githubusercontent.com/scotty-c/lxc-builds/main/sources/conf/gitconfig"
@@ -665,27 +667,6 @@ actions:
     wget https://golang.org/dl/go1.17.2.linux-amd64.tar.gz
     rm -rf /usr/local/go && tar -C /usr/local -xzf go1.17.2.linux-amd64.tar.gz
     su scott -c "echo 'export PATH=$PATH:/usr/local/go/bin' >> home/scott/.profile" 
-    
-    # Install Scrript for Microsk8s
-    (
-    cat << EOF
-    #!/bin/sh
-    set -eux
-    
-    echo "# microk8s..."
-    sudo snap install microk8s --classic --channel=1.22
-    mkdir -p /home/scott/.kube/
-    sudo usermod -a -G microk8s scott
-    sudo chown -f -R scott ~/.kube
-    sudo microk8s config > /home/scott/.kube/config
-    su scott -c "chmod 600 /home/scott/.kube/config"
-    echo 'source <(kubectl completion zsh)' >>~/.zshrc
-    echo 'source <(helm completion zsh)' >>~/.zshrc    
-    sudo microk8s.enable dns storage
-    EOF
-    ) > /home/scott/install.sh
-    
-    chmod +x /home/scott/install.sh
 
     # Install Kubectx
     wget https://github.com/ahmetb/kubectx/releases/download/v0.9.4/kubectx
@@ -693,6 +674,9 @@ actions:
     chmod +x kubectx kubens
     sudo mv kubectx kubens /usr/local/bin/
 
+    Get Scripts
+    wget https://raw.githubusercontent.com/scotty-c/lxc-builds/main/sources/scritps/microk8s.sh
+    
     # Enable systemd-networkd
     systemctl enable systemd-networkd
   releases:
