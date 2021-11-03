@@ -674,7 +674,7 @@ actions:
     chmod +x kubectx kubens
     sudo mv kubectx kubens /usr/local/bin/
 
-    Get Scripts
+    #Get Scripts
     wget https://raw.githubusercontent.com/scotty-c/lxc-builds/main/sources/scripts/microk8s.sh
     
     # Enable systemd-networkd
