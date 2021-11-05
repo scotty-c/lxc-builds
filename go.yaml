@@ -476,6 +476,7 @@ packages:
     - language-pack-en
     - openssh-client
     - sudo
+    - build-essential
     - vim
     - openssh-server
     - ssh-import-id
