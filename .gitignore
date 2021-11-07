@@ -3,4 +3,5 @@ rootfs.squashfs
 sources/sshkeys/id_rsa
 sources/sshkeys/id_rsa.pub
 *.swp
+disk.qcow2
 
