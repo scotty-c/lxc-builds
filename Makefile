@@ -1,4 +1,4 @@
-.PHONY: go rust node k8s ubuntu-vm ubuntu
+.PHONY: go rust node k8s ubuntu-vm ubuntu all
 go:
 	lxc image rm go || true
 	sudo distrobuilder build-lxd -o image.architecture=x86_64 -o image.release=impish -o image.variant=cloud --import-into-lxd="go"  go.yaml
@@ -27,10 +27,4 @@ ubuntu:
 	lxc image rm ubuntu || true
 	sudo distrobuilder build-lxd -o image.architecture=x86_64 -o image.release=impish -o image.variant=cloud --import-into-lxd="21.04" ubuntu.yaml
 
-all:
-	go
-	rust
-	node
-	k8s
-	ubuntu-vm
-	ubuntu
+all: go rust node k8s ubuntu-vm ubuntu 
