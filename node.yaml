@@ -644,10 +644,6 @@ actions:
 
     # Install Node
     su scott -c "curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash"
-    su scott -c "export NVM_DIR="$HOME/.nvm""
-    su scott -c "[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm"
-    su scott -c "[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"" 
-    su scott -c "nvm install 'v16.13.0'"
     
     # Install Git Config
     su scott -c "curl -o /home/scott/.gitconfig https://raw.githubusercontent.com/scotty-c/lxc-builds/main/sources/conf/gitconfig"
