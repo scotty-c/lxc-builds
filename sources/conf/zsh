@@ -285,7 +285,7 @@ fi
 
 
 # Docker functions
-for file in ~/.{bash_prompt,bash_aliases,functions,path,extra,exports,dockerfunc,kubefunc}; do
+for file in ~/.{bash_prompt,bash_aliases,functions,path,extra,exports,cafunc,kubefunc}; do
 	[[ -r "$file" ]] && [[ -f "$file" ]] && source "$file"
 done
 unset file
