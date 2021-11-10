@@ -21,7 +21,7 @@ k8s-vm:
 
 ubuntu-vm:
 	lxc image rm ubuntu-vm || true
-	sudo distrobuilder build-lxd -o image.architecture=x86_64 -o image.release=impish -o image.variant=cloud --import-into-lxd="21.04" --vm  ubuntu.yaml
+	sudo distrobuilder build-lxd -o image.architecture=x86_64 -o image.release=impish -o image.variant=cloud --import-into-lxd="21.04-vm" --vm  ubuntu.yaml
 
 ubuntu:
 	lxc image rm ubuntu || true
