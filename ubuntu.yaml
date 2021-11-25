@@ -596,8 +596,10 @@ actions:
     # Create the ubuntu user account
     getent group sudo >/dev/null 2>&1 || groupadd --system sudo
     useradd --create-home -s /bin/bash -G sudo -U scott
+    echo "scott  ALL=(ALL) NOPASSWD:ALL" | sudo tee /etc/sudoers.d/scott
   variants:
   - default
+  - cloud 
 
 - trigger: post-packages
   action: |-
