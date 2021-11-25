@@ -596,7 +596,6 @@ actions:
     # Create the ubuntu user account
     getent group sudo >/dev/null 2>&1 || groupadd --system sudo
     useradd --create-home -s /bin/bash -G sudo -U scott
-    su scott -c "ssh-import-id gh:scotty-c"
   variants:
   - default
 
@@ -604,6 +603,22 @@ actions:
   action: |-
     #!/bin/sh
     set -eux
+
+    # Get key from GitHub
+    su scott -c "ssh-import-id gh:scotty-c"
+    
+    # Install zsh 
+    sudo apt update -y 
+    sudo apt install zsh zsh-autosuggestions zsh-syntax-highlighting fonts-powerline -y
+    su scott -c "curl -o /home/scott/install.sh https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh"
+    su scott -c "sh /home/scott/install.sh --unattended"
+    rm -rf /home/scott/install.sh
+    chsh -s $(which zsh) scott
+    rm -rf /home/scott/.zshrc
+    su scott -c "curl -o /home/scott/.zshrc https://raw.githubusercontent.com/scotty-c/lxc-builds/main/sources/conf/zsh" 
+    su scott -c "echo 'source <(kubectl completion zsh)' >>~/.zshrc"
+    su scott -c "echo 'source <(helm completion zsh)' >>~/.zshrc"
+    su scott -c "curl -o /home/scott/.alias https://raw.githubusercontent.com/scotty-c/lxc-builds/main/sources/conf/alias"
 
     # Enable systemd-networkd
     systemctl enable systemd-networkd
