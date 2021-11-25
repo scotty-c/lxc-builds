@@ -477,7 +477,8 @@ packages:
     - apt-transport-https
     - lsb-release
     - gnupg
-    - htop  
+    - htop 
+    - git 
     action: install
 
   - packages:
