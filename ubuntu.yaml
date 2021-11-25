@@ -470,7 +470,13 @@ packages:
     - vim
     - openssh-server
     - ssh-import-id
-    - wget 
+    - wget
+    - curl
+    - vim 
+    - ca-certificates
+    - apt-transport-https
+    - lsb-release
+    - gnupg
     - htop  
     action: install
 
