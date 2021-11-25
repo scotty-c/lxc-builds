@@ -625,8 +625,6 @@ actions:
     chsh -s $(which zsh) scott
     rm -rf /home/scott/.zshrc
     su scott -c "curl -o /home/scott/.zshrc https://raw.githubusercontent.com/scotty-c/lxc-builds/main/sources/conf/zsh" 
-    su scott -c "echo 'source <(kubectl completion zsh)' >>~/.zshrc"
-    su scott -c "echo 'source <(helm completion zsh)' >>~/.zshrc"
     su scott -c "curl -o /home/scott/.alias https://raw.githubusercontent.com/scotty-c/lxc-builds/main/sources/conf/alias"
 
     # Enable systemd-networkd
