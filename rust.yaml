@@ -645,7 +645,7 @@ actions:
 
     # Install Rust
     su scott -c "curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y"
-    echo -e "[net]\ngit-fetch-with-cli = true" >>/home/scott/.cargo/config
+    echo "[net]\ngit-fetch-with-cli = true" >>/home/scott/.cargo/config
     chown scott:scott /home/scott/.cargo/config
 
     # Install Git Config
