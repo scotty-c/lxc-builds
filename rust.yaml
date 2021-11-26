@@ -645,7 +645,8 @@ actions:
 
     # Install Rust
     su scott -c "curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y"
-    su scott -c "echo -e "[net]\ngit-fetch-with-cli = true" >>.cargo/config"
+    echo -e "[net]\ngit-fetch-with-cli = true" >>/home/scott/.cargo/config
+    chown scott:scott /home/scott/.cargo/config
 
     # Install Git Config
     su scott -c "curl -o /home/scott/.gitconfig https://raw.githubusercontent.com/scotty-c/lxc-builds/main/sources/conf/gitconfig"
@@ -665,6 +666,7 @@ actions:
     set -eux
 
     # Make sure the locale is built and functional
+
     locale-gen en_US.UTF-8
     update-locale LANG=en_US.UTF-8
 
