@@ -626,6 +626,13 @@ actions:
     rm -rf /home/scott/.zshrc
     su scott -c "curl -o /home/scott/.zshrc https://raw.githubusercontent.com/scotty-c/lxc-builds/main/sources/conf/zsh" 
     su scott -c "curl -o /home/scott/.alias https://raw.githubusercontent.com/scotty-c/lxc-builds/main/sources/conf/alias"
+    
+    # Install Docker
+    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+    echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu focal stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null 
+    sudo apt update -y
+    sudo apt-get install -y docker-ce docker-ce-cli containerd.io
+    sudo usermod -aG  docker scott
 
     # Install Python
     sudo apt install -y python3-pip python3-venv build-essential libssl-dev libffi-dev python3-dev
