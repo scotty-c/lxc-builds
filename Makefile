@@ -28,7 +28,7 @@ ubuntu:
 	sudo distrobuilder build-lxd -o image.architecture=x86_64 -o image.release=impish -o image.variant=cloud --import-into-lxd="ubuntu" ubuntu.yaml
 
 python:
-	lxc image rm ubuntu || true
+	lxc image rm python || true
 	sudo distrobuilder build-lxd -o image.architecture=x86_64 -o image.release=impish -o image.variant=cloud --import-into-lxd="python" python.yaml
 
 all: go rust node k8s ubuntu-vm ubuntu python
