@@ -72,7 +72,7 @@ source:
     kBAAmv4B90tbmgH3kjry1khhXC+pnjXBTymR/yJe42ZPgLbrB2PbTiNCXzqJImV/
     wSK6qzDMPR4Gtj9A084voAFwq+E7gqW5pGJQuu5pcjuh2SYgMC3LmBh7TicPsTfC
     /nmVA5OtPu7tBmd/L//Jj7dDDgRrox5J4Zb6zdESmYA9KX6JpaSpiKjH+2YJA5Ak
-    rSPPFNxjIdwvOg1on4ioA1lQzxREKttFqlFubdfED0V4PRmWDvs0YJnJPWnDpeQb
+    rSPPFNxjIdwvOg1on4ioA1lQzxREKttFqlFubdfED0V4PRmWDvs0YJnJPWnDpeQbpip install grpcio grpcio-tools
     uQuUTgG9SbNL90hCTHyqekmFyEtDbSXGpwFpPVu5FPGS29+VY95WE/LQwuXvaX8F
     2GXLbVhxBuZsKWRtYwaAty1uo3bkfAfwujqC5ST2haWq+25c4QjfWVmBJ6y2mwLP
     8m+V9i7J68FrfeytShFMU2dmyEY3ORPbQZeOfHtYNvqYfHBykBkUIILaS18PB379
@@ -314,7 +314,7 @@ files:
 - path: /etc/hostname
   generator: hostname
 
-- path: /etc/hosts
+- path: /etc/hostspip install grpcio grpcio-tools
   generator: hosts
 
 - path: /etc/resolvconf/resolv.conf.d/original
@@ -635,7 +635,8 @@ actions:
     sudo usermod -aG  docker scott
 
     # Install Python
-    sudo apt install -y python3-pip python3-venv build-essential libssl-dev libffi-dev python3-dev
+    sudo apt install -y python3-pip python3-venv build-essential libssl-dev libffi-dev python3-dev virtualenv python3.10.0
+    
     
     # Enable systemd-networkd
     systemctl enable systemd-networkd
