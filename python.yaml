@@ -72,7 +72,7 @@ source:
     kBAAmv4B90tbmgH3kjry1khhXC+pnjXBTymR/yJe42ZPgLbrB2PbTiNCXzqJImV/
     wSK6qzDMPR4Gtj9A084voAFwq+E7gqW5pGJQuu5pcjuh2SYgMC3LmBh7TicPsTfC
     /nmVA5OtPu7tBmd/L//Jj7dDDgRrox5J4Zb6zdESmYA9KX6JpaSpiKjH+2YJA5Ak
-    rSPPFNxjIdwvOg1on4ioA1lQzxREKttFqlFubdfED0V4PRmWDvs0YJnJPWnDpeQbpip install grpcio grpcio-tools
+    rSPPFNxjIdwvOg1on4ioA1lQzxREKttFqlFubdfED0V4PRmWDvs0YJnJPWnDpeQb
     uQuUTgG9SbNL90hCTHyqekmFyEtDbSXGpwFpPVu5FPGS29+VY95WE/LQwuXvaX8F
     2GXLbVhxBuZsKWRtYwaAty1uo3bkfAfwujqC5ST2haWq+25c4QjfWVmBJ6y2mwLP
     8m+V9i7J68FrfeytShFMU2dmyEY3ORPbQZeOfHtYNvqYfHBykBkUIILaS18PB379
@@ -314,7 +314,7 @@ files:
 - path: /etc/hostname
   generator: hostname
 
-- path: /etc/hostspip install grpcio grpcio-tools
+- path: /etc/hosts
   generator: hosts
 
 - path: /etc/resolvconf/resolv.conf.d/original
@@ -457,6 +457,14 @@ files:
   variants:
     - default
 
+- path: /etc/sshkeys/
+  generator: copy
+  source: sources/sshkeys/
+  variants:
+    - default
+    - cloud 
+    - vm  
+
 packages:
   manager: apt
   update: true
@@ -464,21 +472,20 @@ packages:
   sets:
   - packages:
     - fuse
+    - git  
     - language-pack-en
     - openssh-client
     - sudo
     - vim
     - openssh-server
     - ssh-import-id
-    - wget
-    - curl
-    - vim 
+    - wget 
+    - htop
+    - apt-transport-https 
     - ca-certificates
-    - apt-transport-https
-    - lsb-release
+    - curl
     - gnupg
-    - htop 
-    - git 
+    - lsb-release
     action: install
 
   - packages:
@@ -593,7 +600,6 @@ packages:
     - powerpc64
     - ppc64el
     - riscv64
-
 actions:
 - trigger: post-update
   action: |-
@@ -604,15 +610,16 @@ actions:
     getent group sudo >/dev/null 2>&1 || groupadd --system sudo
     useradd --create-home -s /bin/bash -G sudo -U scott
     echo "scott  ALL=(ALL) NOPASSWD:ALL" | sudo tee /etc/sudoers.d/scott
+
   variants:
   - default
-  - cloud 
+  - cloud  
 
 - trigger: post-packages
   action: |-
     #!/bin/sh
     set -eux
-
+    
     # Get key from GitHub
     su scott -c "ssh-import-id gh:scotty-c"
     
@@ -624,8 +631,9 @@ actions:
     rm -rf /home/scott/install.sh
     chsh -s $(which zsh) scott
     rm -rf /home/scott/.zshrc
-    su scott -c "curl -o /home/scott/.zshrc https://raw.githubusercontent.com/scotty-c/lxc-builds/main/sources/conf/zsh" 
+    su scott -c "curl -o /home/scott/.zshrc https://raw.githubusercontent.com/scotty-c/lxc-builds/main/sources/conf/zsh"
     su scott -c "curl -o /home/scott/.alias https://raw.githubusercontent.com/scotty-c/lxc-builds/main/sources/conf/alias"
+    su scott -c "curl -o /home/scott/.kubefunc https://raw.githubusercontent.com/scotty-c/lxc-builds/main/sources/conf/kubefunc"
     
     # Install Docker
     curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
@@ -633,11 +641,18 @@ actions:
     sudo apt update -y
     sudo apt-get install -y docker-ce docker-ce-cli containerd.io
     sudo usermod -aG  docker scott
-
+    sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+    sudo chmod +x /usr/local/bin/docker-compose
+    
     # Install Python
-    sudo apt install -y python3-pip python3-venv build-essential libssl-dev libffi-dev python3-dev virtualenv python3.10.0
+    sudo apt install -y python3-pip python3-venv build-essential libssl-dev libffi-dev python3-dev virtualenv python3.10.0 
     
+    # Install Git Config
+    su scott -c "curl -o /home/scott/.gitconfig https://raw.githubusercontent.com/scotty-c/lxc-builds/main/sources/conf/gitconfig"
     
+    # Install Az Cli
+    curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash 
+
     # Enable systemd-networkd
     systemctl enable systemd-networkd
   releases:
@@ -678,6 +693,21 @@ actions:
     sed -i "s#root=[^ ]*#root=/dev/sda2#g" /boot/grub/grub.cfg
   types:
   - vm
+
+
+- trigger: post-files
+  action: |-
+    #!/bin/sh
+    set -eux
+
+    mv /etc/sshkeys/id_rsa /home/scott/.ssh/
+    mv /etc/sshkeys/id_rsa.pub /home/scott/.ssh/
+    chown -R scott:scott /home/scott/.ssh/
+    su scott -c "chmod 600 /home/scott/.ssh/id_rsa"
+  variants:
+  - default
+  - vm
+  - cloud  
 
 - trigger: post-packages
   action: |-

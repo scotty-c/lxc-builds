@@ -641,10 +641,15 @@ actions:
     sudo apt update -y
     sudo apt-get install -y docker-ce docker-ce-cli containerd.io
     sudo usermod -aG  docker scott
+    sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+    sudo chmod +x /usr/local/bin/docker-compose
 
     # Install Node
     su scott -c "curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash"
-    
+
+    # Install Az Cli
+    curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
+
     # Install Git Config
     su scott -c "curl -o /home/scott/.gitconfig https://raw.githubusercontent.com/scotty-c/lxc-builds/main/sources/conf/gitconfig"
     

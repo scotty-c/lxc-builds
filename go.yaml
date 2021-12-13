@@ -642,11 +642,16 @@ actions:
     sudo apt update -y
     sudo apt-get install -y docker-ce docker-ce-cli containerd.io
     sudo usermod -aG  docker scott
+    sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+    sudo chmod +x /usr/local/bin/docker-compose
 
     # Install Go
     wget https://golang.org/dl/go1.17.2.linux-amd64.tar.gz
     rm -rf /usr/local/go && tar -C /usr/local -xzf go1.17.2.linux-amd64.tar.gz
     su scott -c "echo 'export PATH=$PATH:/usr/local/go/bin:$HOME/go/bin' >> home/scott/.profile" 
+    
+    # Install Az Cli
+    curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
     
     # Install Git Config
     su scott -c "curl -o /home/scott/.gitconfig https://raw.githubusercontent.com/scotty-c/lxc-builds/main/sources/conf/gitconfig"
