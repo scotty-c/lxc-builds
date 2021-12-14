@@ -645,7 +645,7 @@ actions:
     sudo chmod +x /usr/local/bin/docker-compose
     
     # Install Python
-    sudo apt install -y python3-pip python3-venv build-essential libssl-dev libffi-dev python3-dev virtualenv python3.10.0 
+    sudo apt install -y python3-pip python3-venv build-essential libssl-dev libffi-dev python3-dev virtualenv
     
     # Install Git Config
     su scott -c "curl -o /home/scott/.gitconfig https://raw.githubusercontent.com/scotty-c/lxc-builds/main/sources/conf/gitconfig"
