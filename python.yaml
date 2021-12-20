@@ -634,15 +634,34 @@ actions:
     su scott -c "curl -o /home/scott/.zshrc https://raw.githubusercontent.com/scotty-c/lxc-builds/main/sources/conf/zsh"
     su scott -c "curl -o /home/scott/.alias https://raw.githubusercontent.com/scotty-c/lxc-builds/main/sources/conf/alias"
     su scott -c "curl -o /home/scott/.kubefunc https://raw.githubusercontent.com/scotty-c/lxc-builds/main/sources/conf/kubefunc"
+    su scott -c "curl -o /home/scott/.functions https://raw.githubusercontent.com/scotty-c/lxc-builds/main/sources/conf/functions"
+
+    # Install nerdctl 
+    (
+    cat <<EOF
+    export PATH=$PATH:/usr/local/nerdctl/bin
+    export CONTAINERD_SNAPSHOTTER="fuse-overlayfs"
+    EOF
+    ) >> /home/scott/.profile
     
-    # Install Docker
-    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
-    echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu focal stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null 
-    sudo apt update -y
-    sudo apt-get install -y docker-ce docker-ce-cli containerd.io
-    sudo usermod -aG  docker scott
-    sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-    sudo chmod +x /usr/local/bin/docker-compose
+    sudo mkdir -p /home/scott/.config/containerd
+    touch /home/scott/.config/containerd/config.toml
+    (
+    cat <<EOF
+    [proxy_plugins]
+      [proxy_plugins."fuse-overlayfs"]
+        type = "snapshot"
+        address = "/run/user/1000/containerd-fuse-overlayfs.sock"
+    EOF
+    ) >> /home/scott/.config/containerd/config.toml
+    
+    sudo chown -R scott:scott /home/scott
+    sudo apt install -y make uidmap iptables dbus-user-session fuse-overlayfs apparmor apparmor-utils
+    curl -OL https://github.com/containerd/nerdctl/releases/download/v0.15.0/nerdctl-full-0.15.0-linux-amd64.tar.gz
+    sudo tar -C /usr/local/ -xzf nerdctl-full-0.15.0-linux-amd64.tar.gz
+    sudo mkdir -p /opt/cni/bin/
+    sudo ln -s /usr/local/libexec/cni/* /opt/cni/bin/
+     
     
     # Install Python
     sudo apt install -y python3-pip python3-venv build-essential libssl-dev libffi-dev python3-dev virtualenv

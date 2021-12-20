@@ -1,0 +1,7 @@
+#!/bin/bash
+
+setup-nerdctl() {
+containerd-rootless-setuptool.sh install
+containerd-rootless-setuptool.sh install-buildkit
+containerd-rootless-setuptool.sh install-fuse-overlayfs 
+}
