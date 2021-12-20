@@ -3,5 +3,6 @@
 setup-nerdctl() {
 containerd-rootless-setuptool.sh install
 containerd-rootless-setuptool.sh install-buildkit
-containerd-rootless-setuptool.sh install-fuse-overlayfs 
+containerd-rootless-setuptool.sh install-fuse-overlayfs
+sudo loginctl enable-linger scott
 }
