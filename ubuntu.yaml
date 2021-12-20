@@ -655,13 +655,20 @@ actions:
         address = "/run/user/1000/containerd-fuse-overlayfs.sock"
     EOF
     ) >> /home/scott/.config/containerd/config.toml
-    
+
+    sudo chown -R scott:scott /home/scott
+    sudo apt install -y make uidmap iptables dbus-user-session fuse-overlayfs apparmor apparmor-utils
+    curl -OL https://github.com/containerd/nerdctl/releases/download/v0.15.0/nerdctl-full-0.15.0-linux-amd64.tar.gz
+    sudo tar -C /usr/local/ -xzf nerdctl-full-0.15.0-linux-amd64.tar.gz
+    sudo mkdir -p /opt/cni/bin/
+    sudo ln -s /usr/local/libexec/cni/* /opt/cni/bin/
+
     # Install Git Config
     su scott -c "curl -o /home/scott/.gitconfig https://raw.githubusercontent.com/scotty-c/lxc-builds/main/sources/conf/gitconfig"
 
     # Install Az Cli
     curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash 
-      
+
     # Enable systemd-networkd
     systemctl enable systemd-networkd
   releases:
