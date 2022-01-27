@@ -701,6 +701,8 @@ actions:
         
     #Get Scripts
     curl -o /home/scott/microk8s.sh https://raw.githubusercontent.com/scotty-c/lxc-builds/main/sources/scripts/microk8s.sh
+    chmod +x microk8s.sh
+    chown scott:scott microk8s.sh
     
     # Enable systemd-networkd
     systemctl enable systemd-networkd
