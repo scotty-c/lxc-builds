@@ -694,7 +694,11 @@ actions:
     wget https://github.com/ahmetb/kubectx/releases/download/v0.9.4/kubens
     chmod +x kubectx kubens
     sudo mv kubectx kubens /usr/local/bin/
-
+    
+    # Install Scafold
+    curl -Lo skaffold https://storage.googleapis.com/skaffold/releases/latest/skaffold-linux-amd64
+    sudo install skaffold /usr/local/bin/
+        
     #Get Scripts
     curl -o /home/scott/microk8s.sh https://raw.githubusercontent.com/scotty-c/lxc-builds/main/sources/scripts/microk8s.sh
     
