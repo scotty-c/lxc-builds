@@ -27,6 +27,10 @@ ubuntu:
 	lxc image rm ubuntu || true
 	sudo distrobuilder build-lxd -o image.architecture=x86_64 -o image.release=impish -o image.variant=cloud --import-into-lxd="ubuntu" ubuntu.yaml
 
+docker:
+	lxc image rm docker || true
+	sudo distrobuilder build-lxd -o image.architecture=x86_64 -o image.release=impish -o image.variant=cloud --import-into-lxd="docker" docker.yaml
+
 python:
 	lxc image rm python || true
 	sudo distrobuilder build-lxd -o image.architecture=x86_64 -o image.release=impish -o image.variant=cloud --import-into-lxd="python" python.yaml
