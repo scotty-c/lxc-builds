@@ -637,7 +637,6 @@ actions:
     su scott -c "echo 'source <(helm completion zsh)' >>~/.zshrc"
     su scott -c "curl -o /home/scott/.alias https://raw.githubusercontent.com/scotty-c/lxc-builds/main/sources/conf/alias"
     su scott -c "curl -o /home/scott/.kubefunc https://raw.githubusercontent.com/scotty-c/lxc-builds/main/sources/conf/kubefunc"
-    su scott -c "curl -o /home/scott/.cafunc https://raw.githubusercontent.com/scotty-c/lxc-builds/main/sources/conf/cafunc"
     su scott -c "curl -o /home/scott/.functions https://raw.githubusercontent.com/scotty-c/lxc-builds/main/sources/conf/functions"
      
     # Install nerdctl 
@@ -661,8 +660,8 @@ actions:
     
     sudo chown -R scott:scott /home/scott
     sudo apt install -y make uidmap iptables dbus-user-session fuse-overlayfs apparmor apparmor-utils
-    curl -OL https://github.com/containerd/nerdctl/releases/download/v0.15.0/nerdctl-full-0.15.0-linux-amd64.tar.gz
-    sudo tar -C /usr/local/ -xzf nerdctl-full-0.15.0-linux-amd64.tar.gz
+    curl -OL https://github.com/containerd/nerdctl/releases/download/v0.17.1/nerdctl-full-0.17.1-linux-amd64.tar.gz
+    sudo tar -C /usr/local/ -xzf nerdctl-full-0.17.1-linux-amd64.tar.gz
     sudo mkdir -p /opt/cni/bin/
     sudo ln -s /usr/local/libexec/cni/* /opt/cni/bin/
 
@@ -701,8 +700,8 @@ actions:
         
     #Get Scripts
     curl -o /home/scott/microk8s.sh https://raw.githubusercontent.com/scotty-c/lxc-builds/main/sources/scripts/microk8s.sh
-    chmod +x microk8s.sh
-    chown scott:scott microk8s.sh
+    chmod +x /home/scott/microk8s.sh
+    chown scott:scott /home/scott/microk8s.sh
     
     # Enable systemd-networkd
     systemctl enable systemd-networkd
