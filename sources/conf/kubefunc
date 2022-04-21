@@ -39,7 +39,7 @@ az aks create --resource-group $RS \
   --name k8s \
   --generate-ssh-keys \
   --node-count $NODES \
-  --kubernetes-version 1.21.2 \
+  --kubernetes-version 1.22.6 \
   --node-vm-size Standard_DS2_v2 \
   --zones 1 2 3 \
   --load-balancer-sku standard \
