@@ -610,11 +610,11 @@ actions:
     # Create the ubuntu user account
     getent group sudo >/dev/null 2>&1 || groupadd --system sudo
     useradd --create-home -s /bin/bash -G sudo -U scott
-    echo "scott  ALL=(ALL) NOPASSWD:ALL" | sudo tee /etc/sudoers.d/scott
+    echo "scott  ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/scott
 
   variants:
   - default
-  - cloud  
+  - cloud 
 
 - trigger: post-packages
   action: |-
@@ -625,14 +625,16 @@ actions:
     su scott -c "ssh-import-id gh:scotty-c"
     
     # Install zsh 
-    sudo apt update -y 
-    sudo apt install zsh zsh-autosuggestions zsh-syntax-highlighting fonts-powerline -y
+    apt update -y 
+    apt install zsh zsh-autosuggestions zsh-syntax-highlighting fonts-powerline -y
     su scott -c "curl -o /home/scott/install.sh https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh"
     su scott -c "sh /home/scott/install.sh --unattended"
     rm -rf /home/scott/install.sh
     chsh -s $(which zsh) scott
+    su scott -c "git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k"
     rm -rf /home/scott/.zshrc
-    su scott -c "curl -o /home/scott/.zshrc https://raw.githubusercontent.com/scotty-c/lxc-builds/main/sources/conf/zsh" 
+    su scott -c "curl -o /home/scott/.zshrc https://raw.githubusercontent.com/scotty-c/lxc-builds/main/sources/conf/zsh"
+    su scott -c "curl -o /home/scott/.p10k.zsh https://raw.githubusercontent.com/scotty-c/lxc-builds/main/sources/conf/p10k" 
     su scott -c "curl -o /home/scott/.alias https://raw.githubusercontent.com/scotty-c/lxc-builds/main/sources/conf/alias"
     su scott -c "curl -o /home/scott/.kubefunc https://raw.githubusercontent.com/scotty-c/lxc-builds/main/sources/conf/kubefunc"
     su scott -c "curl -o /home/scott/.functions https://raw.githubusercontent.com/scotty-c/lxc-builds/main/sources/conf/functions"
@@ -645,7 +647,7 @@ actions:
     EOF
     ) >> /home/scott/.profile
     
-    sudo mkdir -p /home/scott/.config/containerd
+    mkdir -p /home/scott/.config/containerd
     touch /home/scott/.config/containerd/config.toml
     (
     cat <<EOF
@@ -656,21 +658,18 @@ actions:
     EOF
     ) >> /home/scott/.config/containerd/config.toml
 
-    sudo chown -R scott:scott /home/scott
-    sudo apt install -y make uidmap iptables dbus-user-session fuse-overlayfs apparmor apparmor-utils
+    chown -R scott:scott /home/scott
+    apt install -y make uidmap iptables dbus-user-session fuse-overlayfs apparmor apparmor-utils
     curl -OL https://github.com/containerd/nerdctl/releases/download/v0.17.1/nerdctl-full-0.17.1-linux-amd64.tar.gz
-    sudo tar -C /usr/local/ -xzf nerdctl-full-0.17.1-linux-amd64.tar.gz
-    sudo mkdir -p /opt/cni/bin/
-    sudo ln -s /usr/local/libexec/cni/* /opt/cni/bin/
+    tar -C /usr/local/ -xzf nerdctl-full-0.17.1-linux-amd64.tar.gz
+    mkdir -p /opt/cni/bin/
+    ln -s /usr/local/libexec/cni/* /opt/cni/bin/
 
     # Install Git Config
     su scott -c "curl -o /home/scott/.gitconfig https://raw.githubusercontent.com/scotty-c/lxc-builds/main/sources/conf/gitconfig"
 
     # Install Az Cli
-    curl -sL https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/microsoft.gpg > /dev/null
-    echo "deb [arch=amd64] https://packages.microsoft.com/repos/azure-cli/ bionic main" | sudo tee /etc/apt/sources.list.d/azure-cli.list
-    sudo apt-get update
-    sudo apt-get install azure-cli -y 
+    curl -sL https://aka.ms/InstallAzureCLIDeb | bash
 
     # Enable systemd-networkd
     systemctl enable systemd-networkd
