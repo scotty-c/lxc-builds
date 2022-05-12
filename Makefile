@@ -31,8 +31,14 @@ docker:
 	lxc image rm docker || true
 	sudo distrobuilder build-lxd -o image.architecture=x86_64 -o image.release=jammy -o image.variant=cloud --import-into-lxd="docker" docker.yaml
 
+docker-vm:
+	lxc image rm docker-vm || true
+	sudo distrobuilder build-lxd -o image.architecture=x86_64 -o image.release=jammy -o image.variant=cloud --import-into-lxd="docker-vm" --vm  docker.yaml
+
 python:
 	lxc image rm python || true
 	sudo distrobuilder build-lxd -o image.architecture=x86_64 -o image.release=jammy -o image.variant=cloud --import-into-lxd="python" python.yaml
 
 all: go rust node k8s ubuntu python
+
+vm: k8s-vm ubuntu-vm docker-vm
