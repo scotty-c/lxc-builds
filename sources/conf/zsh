@@ -126,6 +126,8 @@ for file in ~/.{bash_prompt,bash_aliases,functions,path,extra,exports,dockerfunc
 done
 unset file
 
+[[ -e ~/.profile ]] && emulate sh -c 'source ~/.profile'
+
 plugins=(git docker zsh-completions zsh-syntax-highlighting)
 autoload -U compinit && compinit
 
