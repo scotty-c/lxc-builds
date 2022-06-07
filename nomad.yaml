@@ -591,18 +591,15 @@ packages:
 
   - name: sources.list
     url: |-
-      deb http://ports.ubuntu.co[Unit]
-  Description=consul agent
-  Requires=network-online.target
-  After=network-online.target
-
-  [Service]
-  Restart=on-failure
-  ExecStart=/usr/bin/consul agent -dev
-  ExecReload=/bin/kill -HUP $MAINPID
-
-  [Install]
-  WantedBy=multi-user.target
+      deb http://ports.ubuntu.com/ubuntu-ports {{ image.release }} main restricted universe multiverse
+      deb http://ports.ubuntu.com/ubuntu-ports {{ image.release }}-updates main restricted universe multiverse
+      deb http://ports.ubuntu.com/ubuntu-ports {{ image.release }}-security main restricted universe multiverse
+    architectures:
+    - armhf
+    - arm64
+    - powerpc
+    - powerpc64
+    - ppc64el
     - riscv64
 actions:
 - trigger: post-update

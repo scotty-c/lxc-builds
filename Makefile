@@ -43,6 +43,12 @@ spin:
 	lxc image rm spin || true
 	sudo distrobuilder build-lxd -o image.architecture=x86_64 -o image.release=jammy -o image.variant=cloud --import-into-lxd="spin" spin.yaml
 
+nomad:
+	lxc image rm nomad || true
+	sudo distrobuilder build-lxd -o image.architecture=x86_64 -o image.release=jammy -o image.variant=cloud --import-into-lxd="nomad" nomad.yaml
+
+
+
 all: go rust node k8s ubuntu python docker spin
 
 vm: k8s-vm ubuntu-vm docker-vm
