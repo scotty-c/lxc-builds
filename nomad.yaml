@@ -667,6 +667,8 @@ actions:
     # Install Consul
     apt install consul -y
     curl -o /etc/systemd/system/consul.service https://raw.githubusercontent.com/scotty-c/lxc-builds/main/sources/conf/consul
+    curl -o /etc/consul.d/consul.hcl https://raw.githubusercontent.com/scotty-c/lxc-builds/main/sources/conf/consul.hcl
+    chown -R consul:consul /opt/consul
     systemctl enable consul.service
 
     # Enable systemd-networkd
