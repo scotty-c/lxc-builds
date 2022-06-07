@@ -660,6 +660,9 @@ actions:
     apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
     apt-get update
     apt-get install nomad -y
+    curl -o /etc/nomad.d/nomad.hcl https://raw.githubusercontent.com/scotty-c/lxc-builds/main/sources/conf/nomad.hcl
+    curl -o /etc/systemd/system/nomad.service https://raw.githubusercontent.com/scotty-c/lxc-builds/main/sources/conf/nomad
+    systemctl enable nomad.service
 
     # Install Consul
     apt install consul -y
