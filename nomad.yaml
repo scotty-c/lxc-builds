@@ -663,6 +663,7 @@ actions:
     curl -o /etc/nomad.d/nomad.hcl https://raw.githubusercontent.com/scotty-c/lxc-builds/main/sources/conf/nomad.hcl
     curl -o /etc/systemd/system/nomad.service https://raw.githubusercontent.com/scotty-c/lxc-builds/main/sources/conf/nomad
     systemctl enable nomad.service
+    nomad -autocomplete-install
 
     # Install Consul
     apt install consul -y
