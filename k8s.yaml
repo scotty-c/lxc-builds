@@ -693,9 +693,9 @@ actions:
     su scott -c "curl -o /home/scott/.gitconfig https://raw.githubusercontent.com/scotty-c/lxc-builds/main/sources/conf/gitconfig"
 
     # Install Go
-    go-ver="1.17.2"
-    wget https://golang.org/dl/go${go-ver}.linux-${arch}.tar.gz
-    rm -rf /usr/local/go && tar -C /usr/local -xzf go${go-ver}.linux-${arch}.tar.gz
+    gover="1.17.2"
+    wget https://golang.org/dl/go${gover}.linux-${arch}.tar.gz
+    rm -rf /usr/local/go && tar -C /usr/local -xzf go${gover}.linux-${arch}.tar.gz
     su scott -c "echo 'export PATH=$PATH:/usr/local/go/bin' >> home/scott/.profile" 
 
     # Install Kubectx
