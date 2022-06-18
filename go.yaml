@@ -675,8 +675,9 @@ actions:
     ln -s /usr/local/libexec/cni/* /opt/cni/bin/ 
      
     # Install Go
-    wget https://golang.org/dl/go1.17.2.linux-${arch}.tar.gz
-    rm -rf /usr/local/go && tar -C /usr/local -xzf go1.17.2.linux-${arch}.tar.gz
+    go-ver=1.17.2
+    wget https://golang.org/dl/go${go-ver}.linux-${arch}.tar.gz
+    rm -rf /usr/local/go && tar -C /usr/local -xzf go${go-ver}.linux-${arch}.tar.gz
     su scott -c "echo 'export PATH=$PATH:/usr/local/go/bin:$HOME/go/bin' >> home/scott/.profile" 
     
     # Install Az Cli

@@ -617,7 +617,7 @@ actions:
 
 - trigger: post-packages
   action: |-
-    #!/bin/sh
+    #!/bin/bash
     set -eux
     
     # Get key from GitHub
@@ -659,13 +659,19 @@ actions:
     EOF
     ) >> /home/scott/.config/containerd/config.toml
     
+    if [[ $(uname -i) == x86_64 ]]; then 
+      arch="amd64" 
+    else 
+      arch="arm64" 
+    fi
+    version="0.20.0"
     chown -R scott:scott /home/scott
     apt install -y make uidmap iptables dbus-user-session fuse-overlayfs apparmor apparmor-utils
-    curl -OL https://github.com/containerd/nerdctl/releases/download/v0.17.1/nerdctl-full-0.17.1-linux-amd64.tar.gz
-    tar -C /usr/local/ -xzf nerdctl-full-0.17.1-linux-amd64.tar.gz
+    curl -OL https://github.com/containerd/nerdctl/releases/download/v${version}/nerdctl-full-${version}-linux-${arch}.tar.gz
+    tar -C /usr/local/ -xzf nerdctl-full-${version}-linux-${arch}.tar.gz
     mkdir -p /opt/cni/bin/
-    ln -s /usr/local/libexec/cni/* /opt/cni/bin/
-    
+    ln -s /usr/local/libexec/cni/* /opt/cni/bin/ 
+     
     # Install Node
     su scott -c "curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash"
 
