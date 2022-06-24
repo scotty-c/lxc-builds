@@ -665,9 +665,16 @@ actions:
     apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
     apt-get update
     apt-get install nomad -y
+    curl -o /etc/nomad.d/nomad.hcl https://raw.githubusercontent.com/scotty-c/lxc-builds/main/sources/conf/nomad.hcl
+    curl -o /etc/systemd/system/nomad.service https://raw.githubusercontent.com/scotty-c/lxc-builds/main/sources/conf/nomad
+    systemctl enable nomad.service
 
     # Install Consul
     apt install consul -y
+    curl -o /etc/systemd/system/consul.service https://raw.githubusercontent.com/scotty-c/lxc-builds/main/sources/conf/consul
+    curl -o /etc/consul.d/consul.hcl https://raw.githubusercontent.com/scotty-c/lxc-builds/main/sources/conf/consul.hcl
+    chown -R consul:consul /opt/consul
+    systemctl enable consul.service
 
     # Install Rust
     su scott -c "curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y"
