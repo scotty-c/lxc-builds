@@ -53,8 +53,8 @@ spin:
 	sudo distrobuilder build-lxd -o image.architecture=$(ARCH) -o image.release=jammy -o image.variant=cloud -o source.url=$(URL) --import-into-lxd="spin" spin.yaml
 
 spin-vm:
-        lxc image rm spin-vm || true
-        sudo distrobuilder build-lxd -o image.architecture=$(ARCH) -o image.release=jammy -o image.variant=cloud -o source.url=$(URL) --import-into-lxd="spin-vm" --vm  spin.yaml
+    lxc image rm spin-vm || true
+    sudo distrobuilder build-lxd -o image.architecture=$(ARCH) -o image.release=jammy -o image.variant=cloud -o source.url=$(URL) --import-into-lxd="spin-vm" --vm  spin.yaml
 
 nomad:
 	lxc image rm nomad || true
