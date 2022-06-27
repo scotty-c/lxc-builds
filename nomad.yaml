@@ -618,7 +618,7 @@ actions:
 
 - trigger: post-packages
   action: |-
-    #!/bin/sh
+    #!/bin/bash
     set -eux
     
     # Get key from GitHub
