@@ -675,6 +675,7 @@ actions:
     set -eux
     spin templates install --git https://github.com/ferymon/spin
     git clone https://github.com/fermyon/installer.git
+    cd installer/job && ./install.sh & 
     EOF
     ) >> /home/scott/spin.sh
     chmod +x /home/scott/spin.sh
