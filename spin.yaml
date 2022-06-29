@@ -681,6 +681,19 @@ actions:
     chmod +x /home/scott/spin.sh
     chown scott:scott /home/scott/spin.sh 
 
+    # Setup env
+    (
+    cat <<EOF
+    export CONSUL_HTTP_ADDR=http://localhost:8500
+    export NOMAD_ADDR=http://localhost:4646
+    export BINDLE_URL=http://bindle.local.fermyon.link/v1
+    export HIPPO_URL=http://hippo.local.fermyon.link
+    export HIPPO_USERNAME=scott
+    export HIPPO_PASSWORD=password
+    EOF
+    ) >> /home/scott/.zshrc
+    chown scott:scott /home/scott/.zshrc
+
     # Enable systemd-networkd
     systemctl enable systemd-networkd
   releases:
