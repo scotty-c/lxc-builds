@@ -645,7 +645,7 @@ actions:
     wget https://github.com/fermyon/spin/releases/download/v0.3.0/spin-v0.3.0-linux-amd64.tar.gz
     tar xfv spin-v0.3.0-linux-amd64.tar.gz
     mv spin /usr/local/bin/spin
-    spin templates install --git https://github.com/ferymon/spin
+    su scott -c "spin templates install --git https://github.com/ferymon/spin"
     
     #echo "deb http://security.ubuntu.com/ubuntu impish-security main" | tee /etc/apt/sources.list.d/impish-security.list
     #apt-get update 
@@ -664,7 +664,7 @@ actions:
     su scott -c "curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y"
     echo "[net]\ngit-fetch-with-cli = true" >>/home/scott/.cargo/config
     chown scott:scott /home/scott/.cargo/config
-    rustup target add wasm32-wasi
+    su scott -c "rustup target add wasm32-wasi"
 
     # Install TinyGo 
     wget https://github.com/tinygo-org/tinygo/releases/download/v0.23.0/tinygo_0.23.0_amd64.deb
