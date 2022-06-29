@@ -673,8 +673,7 @@ actions:
     cat <<EOF
     #!/bin/sh
     set -eux
-    spin templates install --git https://github.com/ferymon/spin
-    git clone https://github.com/fermyon/installer.git
+    spin templates install --git https://github.com/fermyon/spin
     cd installer/job && ./install.sh & 
     EOF
     ) >> /home/scott/spin.sh
