@@ -657,10 +657,20 @@ actions:
     
     # Install lima
     limaver=0.11.1
+    #apt get install qemu 
     wget https://github.com/lima-vm/lima/releases/download/v${limaver}/lima-${limaver}-Linux-${proc}.tar.gz
     mkdir /home/scott/.bin && tar -C /home/scott/.bin -xzf lima-${limaver}-Linux-${proc}.tar.gz
     chown -R scott:scott /home/scott/.bin
-    su scott -c "echo 'export PATH=$PATH:/home/scott/.bin' >> home/scott/.profile"
+    (
+    cat <<EOF
+    
+    typeset -U PATH path
+    BINPATH="$HOME/.bin"
+    path+=("$BINPATH" "${BINPATH}"/*/)
+    export PATH
+
+    ) >> /home/scott/.zshrc
+    chown- R scott:scott /home/scott/.zshrc
 
     # Install Git Config
     su scott -c "curl -o /home/scott/.gitconfig https://raw.githubusercontent.com/scotty-c/lxc-builds/main/sources/conf/gitconfig"
