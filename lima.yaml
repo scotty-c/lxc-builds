@@ -668,7 +668,8 @@ actions:
     BINPATH="$HOME/.bin"
     path+=("$BINPATH" "${BINPATH}"/*/)
     export PATH
-
+    
+    EOF
     ) >> /home/scott/.zshrc
     chown- R scott:scott /home/scott/.zshrc
 
