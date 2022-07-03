@@ -656,9 +656,9 @@ actions:
     su scott -c "echo 'export PATH=$PATH:/usr/local/go/bin:$HOME/go/bin' >> home/scott/.profile" 
     
     # Install lima
-    limver=0.11.1
-    wget https://github.com/lima-vm/lima/releases/download/v${limver}/lima-${limver}-Linux-${pro}.tar.gz
-    mkdir /home/scott/.bin && tar -C /home/scott/.bin -xzf lima-${limver}-Linux-${pro}.tar.gz
+    limaver=0.11.1
+    wget https://github.com/lima-vm/lima/releases/download/v${limaver}/lima-${limaver}-Linux-${proc}.tar.gz
+    mkdir /home/scott/.bin && tar -C /home/scott/.bin -xzf lima-${limaver}-Linux-${proc}.tar.gz
     chown -R scott:scott /home/scott/.bin
     su scott -c "echo 'export PATH=$PATH:/home/scott/.bin' >> home/scott/.profile"
 
