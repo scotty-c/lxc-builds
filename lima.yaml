@@ -661,16 +661,16 @@ actions:
     wget https://github.com/lima-vm/lima/releases/download/v${limaver}/lima-${limaver}-Linux-${proc}.tar.gz
     mkdir /home/scott/.bin && tar -C /home/scott/.bin -xzf lima-${limaver}-Linux-${proc}.tar.gz
     chown -R scott:scott /home/scott/.bin
+    
     (
     cat <<EOF
-    
     typeset -U PATH path
     BINPATH="$HOME/.bin"
     path+=("$BINPATH" "${BINPATH}"/*/)
     export PATH
-    
     EOF
     ) >> /home/scott/.zshrc
+    
     chown- R scott:scott /home/scott/.zshrc
 
     # Install Git Config
