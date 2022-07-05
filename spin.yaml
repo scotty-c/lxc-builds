@@ -693,7 +693,9 @@ actions:
     EOF
     ) >> /home/scott/.zshrc
     chown scott:scott /home/scott/.zshrc
-
+    
+    echo 'net.ipv4.ip_unprivileged_port_start=0' > /etc/sysctl.d/50-unprivileged-ports.conf
+    
     # Enable systemd-networkd
     systemctl enable systemd-networkd
   releases:
