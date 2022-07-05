@@ -678,7 +678,7 @@ actions:
     gover=1.18.3
     wget https://golang.org/dl/go${gover}.linux-${arch}.tar.gz
     rm -rf /usr/local/go && tar -C /usr/local -xzf go${gover}.linux-${arch}.tar.gz
-    su scott -c "echo 'export PATH=$PATH:/usr/local/go/bin:$HOME/go/bin' >> home/scott/.profile" 
+    su scott -c "echo 'export PATH=$PATH:/usr/local/go/bin:/home/scott/go/bin' >> /home/scott/.profile" 
     
     # Install Az Cli
     curl -sL https://aka.ms/InstallAzureCLIDeb | bash
