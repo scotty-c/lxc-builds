@@ -674,7 +674,14 @@ actions:
 
     # Install Git Config
     su scott -c "curl -o /home/scott/.gitconfig https://raw.githubusercontent.com/scotty-c/lxc-builds/main/sources/conf/gitconfig"
-
+    
+    # Install vivaldi 
+    apt -y install wget gnupg2 software-properties-common
+    wget -qO- https://repo.vivaldi.com/archive/linux_signing_key.pub | apt-key add -
+    add-apt-repository 'deb https://repo.vivaldi.com/archive/deb/ stable main' 
+    apt update
+    apt install vivaldi-stable -y
+    
     # Enable systemd-networkd
     systemctl enable systemd-networkd
   releases:
