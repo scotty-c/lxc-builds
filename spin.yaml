@@ -696,6 +696,10 @@ actions:
     
     echo 'net.ipv4.ip_unprivileged_port_start=0' > /etc/sysctl.d/50-unprivileged-ports.conf
     
+    # Browser for x forwrding 
+    wget -c https://downloads.vivaldi.com/stable/vivaldi-stable_5.2.2623.39-1_amd64.deb
+    dpkg -i vivaldi-stable_5.2.2623.39-1_amd64.deb
+    
     # Enable systemd-networkd
     systemctl enable systemd-networkd
   releases:
