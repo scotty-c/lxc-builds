@@ -709,6 +709,12 @@ actions:
     chmod +x /home/scott/microk8s.sh
     chown scott:scott /home/scott/microk8s.sh
     
+    # Browser for x forwrding 
+    wget -O- https://repo.vivaldi.com/archive/linux_signing_key.pub | gpg --dearmor | tee /usr/share/keyrings/vivaldi.gpg
+    echo deb [arch=amd64,armhf signed-by=/usr/share/keyrings/vivaldi.gpg] https://repo.vivaldi.com/archive/deb/ stable main | tee /etc/apt/sources.list.d/vivaldi.list
+    apt update
+    apt install vivaldi-stable -y
+    
     # Enable systemd-networkd
     systemctl enable systemd-networkd
   releases:
