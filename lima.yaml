@@ -656,7 +656,7 @@ actions:
     su scott -c "echo 'export PATH=$PATH:/usr/local/go/bin:/home/scott/go/bin' >> /home/scott/.profile" 
     
     # Install lima
-    limaver=0.11.1
+    limaver=0.11.3
     apt install qemu-utils qemu-system -y
     adduser scott kvm 
     wget https://github.com/lima-vm/lima/releases/download/v${limaver}/lima-${limaver}-Linux-${proc}.tar.gz
