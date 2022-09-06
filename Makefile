@@ -26,7 +26,7 @@ k8s:
 
 k8s-vm:
 	lxc image rm k8s-vm || true
-	sudo distrobuilder build-lxd -o image.architecture=$(ARCH) -o image.release=jammy -o image.variant=cloud -o source.url=$(URL) --import-into-lxd="k8s-vm" --vm  k8s.yaml
+	sudo distrobuilder build-lxd -o image.architecture=$(ARCH) -o image.release=jammy -o image.variant=cloud -o source.url=$(URL) -o targets.lxd.vm.size=8294967296  --import-into-lxd="k8s-vm" --vm  k8s.yaml
 
 ubuntu-vm:
 	lxc image rm ubuntu-vm || true
