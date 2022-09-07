@@ -64,6 +64,11 @@ lima-vm:
 	lxc image rm lima-vm || true
 	sudo distrobuilder build-lxd -o image.architecture=$(ARCH) -o image.release=jammy -o image.variant=cloud -o source.url=$(URL) --import-into-lxd="lima-vm" --vm  lima.yaml
 
+k3d-vm:
+	lxc image rm k3d-vm || true
+	sudo distrobuilder build-lxd -o image.architecture=$(ARCH) -o image.release=jammy -o image.variant=cloud -o source.url=$(URL) --import-into-lxd="k3d-vm" --vm  k3d.yaml
+
+
 all: go rust node k8s ubuntu python docker spin
 
-vm: k8s-vm ubuntu-vm docker-vm
+vm: k8s-vm ubuntu-vm docker-vm spin-vm lima-vm k3d-vm
