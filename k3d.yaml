@@ -655,8 +655,8 @@ actions:
     # Install Git Config
     su scott -c "curl -o /home/scott/.gitconfig https://raw.githubusercontent.com/scotty-c/lxc-builds/main/sources/conf/gitconfig"
 
-    # Install Az Cli
-    curl -sL https://aka.ms/InstallAzureCLIDeb | bash
+    # Install k3d
+    wget -q -O - https://raw.githubusercontent.com/k3d-io/k3d/main/install.sh | bash 
 
     # Enable systemd-networkd
     systemctl enable systemd-networkd
