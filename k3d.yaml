@@ -658,6 +658,13 @@ actions:
     # Install k3d
     wget -q -O - https://raw.githubusercontent.com/k3d-io/k3d/main/install.sh | bash 
 
+    # Install Kubectl
+    curl -fsSL https://packages.cloud.google.com/apt/doc/apt-key.gpg | gpg --dearmor -o /usr/share/keyrings/kubernetes-archive-keyring.gpg
+    echo "deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main" | tee /etc/apt/sources.list.d/kubernetes.list
+    apt-get update -y
+    apt-get install -y kubectl
+    echo 'source <(kubectl completion zsh)' >>/home/scott/.zshrc
+
     # Enable systemd-networkd
     systemctl enable systemd-networkd
   releases:
