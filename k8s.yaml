@@ -699,10 +699,9 @@ actions:
     su scott -c "echo 'export PATH=$PATH:/usr/local/go/bin' >> home/scott/.profile" 
 
     # Install Kubectx
-    wget https://github.com/ahmetb/kubectx/releases/download/v0.9.4/kubectx
-    wget https://github.com/ahmetb/kubectx/releases/download/v0.9.4/kubens
-    chmod +x kubectx kubens
-    mv kubectx kubens /usr/local/bin/
+    git clone https://github.com/ahmetb/kubectx /opt/kubectx
+    ln -s /opt/kubectx/kubectx /usr/local/bin/kubectx
+    ln -s /opt/kubectx/kubens /usr/local/bin/kubens
     su scott -c "mkdir -p ~/.oh-my-zsh/completions"
     su scott -c "chmod -R 755 ~/.oh-my-zsh/completions"
     su scott -c "ln -s /opt/kubectx/completion/kubectx.zsh ~/.oh-my-zsh/completions/_kubectx.zsh"
