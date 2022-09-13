@@ -704,18 +704,18 @@ actions:
     ln -s /opt/kubectx/kubens /usr/local/bin/kubens
     su scott -c "mkdir -p ~/.oh-my-zsh/completions"
     su scott -c "chmod -R 755 ~/.oh-my-zsh/completions"
-    su scott -c "ln -s /opt/kubectx/completion/kubectx.zsh ~/.oh-my-zsh/completions/_kubectx.zsh"
-    su scott -c "ln -s /opt/kubectx/completion/kubens.zsh ~/.oh-my-zsh/completions/_kubens.zsh"
+    su scott -c "ln -s /opt/kubectx/completion/_kubectx.zsh ~/.oh-my-zsh/completions/_kubectx.zsh"
+    su scott -c "ln -s /opt/kubectx/completion/_kubens.zsh ~/.oh-my-zsh/completions/_kubens.zsh"
 
     # Install k3d
     wget -q -O - https://raw.githubusercontent.com/k3d-io/k3d/main/install.sh | bash
-    su scott -c "k3d completion zsh > ~/.oh-my-zsh/completions/_k3d.zsh" 
+    su scott -c "k3d completion zsh > /usr/share/zsh/functions/Completion/_k3d.zsh" 
     
     # Install kind
     curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.15.0/kind-linux-amd64
     chmod +x ./kind
     mv ./kind /usr/local/bin/kind
-    su scott -c "kind completion zsh > ~/.oh-my-zsh/completions/_kind.zsh"
+    su scott -c "kind completion zsh > /usr/share/zsh/functions/Completion/_kind"
     
     # Get Scripts
     curl -o /home/scott/microk8s.sh https://raw.githubusercontent.com/scotty-c/lxc-builds/main/sources/scripts/microk8s.sh
