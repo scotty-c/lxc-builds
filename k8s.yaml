@@ -702,7 +702,7 @@ actions:
     git clone https://github.com/ahmetb/kubectx /opt/kubectx
     ln -s /opt/kubectx/kubectx /usr/local/bin/kubectx
     ln -s /opt/kubectx/kubens /usr/local/bin/kubens
-    ln -s /opt/kubectx/completion/_kubectx.zsh /usr/share/zsh/functions/Completion_kubectx.zsh
+    ln -s /opt/kubectx/completion/_kubectx.zsh /usr/share/zsh/functions/Completion/_kubectx.zsh
     ln -s /opt/kubectx/completion/_kubens.zsh /usr/share/zsh/functions/Completion/_kubens.zsh
 
     # Install k3d
