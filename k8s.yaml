@@ -661,6 +661,11 @@ actions:
 
     # Install Go
     gover="1.18.3"
+     if [[ $(uname -i) == x86_64 ]]; then 
+      arch="amd64" 
+    else 
+      arch="arm64" 
+    fi
     wget https://golang.org/dl/go${gover}.linux-${arch}.tar.gz
     rm -rf /usr/local/go && tar -C /usr/local -xzf go${gover}.linux-${arch}.tar.gz
     su scott -c "echo 'export PATH=$PATH:/usr/local/go/bin' >> home/scott/.profile" 
