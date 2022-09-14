@@ -709,13 +709,13 @@ actions:
 
     # Install k3d
     wget -q -O - https://raw.githubusercontent.com/k3d-io/k3d/main/install.sh | bash
-    su scott -c "k3d completion zsh > /usr/share/zsh/functions/Completion/_k3d.zsh" 
+    k3d completion zsh > /usr/share/zsh/functions/Completion/_k3d.zsh 
     
     # Install kind
     curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.15.0/kind-linux-amd64
     chmod +x ./kind
     mv ./kind /usr/local/bin/kind
-    su scott -c "kind completion zsh > /usr/share/zsh/functions/Completion/_kind"
+    kind completion zsh > /usr/share/zsh/functions/Completion/_kind
     
     # Get Scripts
     curl -o /home/scott/microk8s.sh https://raw.githubusercontent.com/scotty-c/lxc-builds/main/sources/scripts/microk8s.sh
