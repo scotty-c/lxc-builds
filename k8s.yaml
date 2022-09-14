@@ -702,10 +702,8 @@ actions:
     git clone https://github.com/ahmetb/kubectx /opt/kubectx
     ln -s /opt/kubectx/kubectx /usr/local/bin/kubectx
     ln -s /opt/kubectx/kubens /usr/local/bin/kubens
-    su scott -c "mkdir -p ~/.oh-my-zsh/completions"
-    su scott -c "chmod -R 755 ~/.oh-my-zsh/completions"
-    su scott -c "ln -s /opt/kubectx/completion/_kubectx.zsh ~/.oh-my-zsh/completions/_kubectx.zsh"
-    su scott -c "ln -s /opt/kubectx/completion/_kubens.zsh ~/.oh-my-zsh/completions/_kubens.zsh"
+    ln -s /opt/kubectx/completion/_kubectx.zsh /usr/share/zsh/functions/Completion_kubectx.zsh
+    ln -s /opt/kubectx/completion/_kubens.zsh /usr/share/zsh/functions/Completion/_kubens.zsh
 
     # Install k3d
     wget -q -O - https://raw.githubusercontent.com/k3d-io/k3d/main/install.sh | bash
