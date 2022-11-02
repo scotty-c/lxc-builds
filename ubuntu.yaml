@@ -482,6 +482,7 @@ packages:
     - ssh-import-id
     - wget 
     - htop
+    - unzip
     - apt-transport-https 
     - ca-certificates
     - curl
