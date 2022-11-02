@@ -676,8 +676,10 @@ actions:
     # Install Git Config
     su scott -c "curl -o /home/scott/.gitconfig https://raw.githubusercontent.com/scotty-c/lxc-builds/main/sources/conf/gitconfig"
 
-    # Install Az Cli
-    curl -sL https://aka.ms/InstallAzureCLIDeb | bash
+    # Install AWS Cli
+    curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+    unzip awscliv2.zip
+    sudo ./aws/install
 
     # Enable systemd-networkd
     systemctl enable systemd-networkd
