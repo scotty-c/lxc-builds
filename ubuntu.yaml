@@ -666,7 +666,7 @@ actions:
     else 
       arch="arm64" 
     fi
-    version="0.22.2"
+    version="1.0.0"
     chown -R scott:scott /home/scott
     apt install -y make uidmap iptables dbus-user-session fuse-overlayfs apparmor apparmor-utils
     curl -OL https://github.com/containerd/nerdctl/releases/download/v${version}/nerdctl-full-${version}-linux-${arch}.tar.gz
@@ -734,7 +734,7 @@ actions:
     mv /etc/sshkeys/id_rsa.pub /home/scott/.ssh/
     mkdir -p /home/scott/.key
     chown -R scott:scott /home/scott/.ssh/
-    chwon -R scott:scott /home/scott/.key
+    chown -R scott:scott /home/scott/.key
     su scott -c "chmod 600 /home/scott/.ssh/id_rsa"
     mv /etc/sshkeys/key.csv /home/scott/.key/
   variants:
