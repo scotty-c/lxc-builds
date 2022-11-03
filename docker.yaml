@@ -482,6 +482,7 @@ packages:
     - ssh-import-id
     - wget 
     - htop
+    - unzip
     - apt-transport-https 
     - ca-certificates
     - curl
@@ -655,8 +656,10 @@ actions:
     # Install Git Config
     su scott -c "curl -o /home/scott/.gitconfig https://raw.githubusercontent.com/scotty-c/lxc-builds/main/sources/conf/gitconfig"
 
-    # Install Az Cli
-    curl -sL https://aka.ms/InstallAzureCLIDeb | bash
+    # Install AWS Cli
+    curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+    unzip awscliv2.zip
+    ./aws/install
 
     # Enable systemd-networkd
     systemctl enable systemd-networkd
@@ -708,8 +711,12 @@ actions:
 
     mv /etc/sshkeys/id_rsa /home/scott/.ssh/
     mv /etc/sshkeys/id_rsa.pub /home/scott/.ssh/
+    mkdir -p /home/scott/.aws/
     chown -R scott:scott /home/scott/.ssh/
+    chown -R scott:scott /home/scott/.aws/
     su scott -c "chmod 600 /home/scott/.ssh/id_rsa"
+    mv /etc/sshkeys/key.csv /home/scott/.aws/credentials
+    su scott -c "chmod 600 /home/scott/.aws/credentials"
   variants:
   - default
   - vm
