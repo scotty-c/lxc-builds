@@ -681,6 +681,10 @@ actions:
     curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
     unzip awscliv2.zip
     ./aws/install
+    
+    # Install AWS copilot
+    curl -Lo /usr/local/bin/copilot https://github.com/aws/copilot-cli/releases/latest/download/copilot-linux \
+    chmod +x /usr/local/bin/copilot
 
     # Enable systemd-networkd
     systemctl enable systemd-networkd
