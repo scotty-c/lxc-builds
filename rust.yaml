@@ -679,9 +679,6 @@ actions:
     echo "[net]\ngit-fetch-with-cli = true" >>/home/scott/.cargo/config
     chown scott:scott /home/scott/.cargo/config
     
-    # Install Az Cli
-    curl -sL https://aka.ms/InstallAzureCLIDeb | bash
-
     # Install Git Config
     su scott -c "curl -o /home/scott/.gitconfig https://raw.githubusercontent.com/scotty-c/lxc-builds/main/sources/conf/gitconfig"
     

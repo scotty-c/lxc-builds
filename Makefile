@@ -7,7 +7,7 @@ ifeq ($(ARCH),aarch64)
         URL += http://ports.ubuntu.com/ubuntu-ports
 endif
 
-.PHONY: go rust node k8s ubuntu-vm ubuntu python spin nomad all vm
+.PHONY: go rust k8s ubuntu-vm ubuntu python all vm
 go:
 	lxc image rm go || true
 	sudo distrobuilder build-lxd -o image.architecture=$(ARCH) -o image.release=jammy -o image.variant=cloud -o source.url=$(URL) --import-into-lxd="go"  go.yaml
@@ -15,10 +15,6 @@ go:
 rust:
 	lxc image rm rust || true
 	sudo distrobuilder build-lxd -o image.architecture=$(ARCH) -o image.release=jammy -o image.variant=cloud -o source.url=$(URL) --import-into-lxd="rust"  rust.yaml
-
-node:
-	lxc image rm node || true
-	sudo distrobuilder build-lxd -o image.architecture=$(ARCH) -o image.release=jammy -o image.variant=cloud -o source.url=$(URL) --import-into-lxd="node"  node.yaml
 
 k8s:
 	lxc image rm k8s || true
@@ -48,27 +44,11 @@ python:
 	lxc image rm python || true
 	sudo distrobuilder build-lxd -o image.architecture=$(ARCH) -o image.release=jammy -o image.variant=cloud -o source.url=$(URL) --import-into-lxd="python" python.yaml
 
-spin:
-	lxc image rm spin || true
-	sudo distrobuilder build-lxd -o image.architecture=$(ARCH) -o image.release=jammy -o image.variant=cloud -o source.url=$(URL) --import-into-lxd="spin" spin.yaml
-
-spin-vm:
-	lxc image rm spin-vm || true
-	sudo distrobuilder build-lxd -o image.architecture=$(ARCH) -o image.release=jammy -o image.variant=cloud -o source.url=$(URL) --import-into-lxd="spin-vm" --vm  spin.yaml
-
-nomad:
-	lxc image rm nomad || true
-	sudo distrobuilder build-lxd -o image.architecture=$(ARCH) -o image.release=jammy -o image.variant=cloud -o source.url=$(URL) --import-into-lxd="nomad" nomad.yaml
-
-lima-vm:
-	lxc image rm lima-vm || true
-	sudo distrobuilder build-lxd -o image.architecture=$(ARCH) -o image.release=jammy -o image.variant=cloud -o source.url=$(URL) --import-into-lxd="lima-vm" --vm  lima.yaml
-
-k3d-vm:
-	lxc image rm k3d-vm || true
-	sudo distrobuilder build-lxd -o image.architecture=$(ARCH) -o image.release=jammy -o image.variant=cloud -o source.url=$(URL) --import-into-lxd="k3d-vm" --vm  k3d.yaml
+cdk:
+	lxc image rm cdk || true
+	sudo distrobuilder build-lxd -o image.architecture=$(ARCH) -o image.release=jammy -o image.variant=cloud -o source.url=$(URL) --import-into-lxd="cdk" cdk.yaml
 
 
-all: go rust node k8s ubuntu python docker spin
+all: go rust k8s ubuntu python docker cdk
 
-vm: k8s-vm ubuntu-vm docker-vm spin-vm lima-vm k3d-vm
+vm: k8s-vm ubuntu-vm docker-vm

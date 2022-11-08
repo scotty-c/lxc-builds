@@ -666,7 +666,7 @@ actions:
     else 
       arch="arm64" 
     fi
-    version="0.20.0"
+    version="1.0.0"
     chown -R scott:scott /home/scott
     apt install -y make uidmap iptables dbus-user-session fuse-overlayfs apparmor apparmor-utils
     curl -OL https://github.com/containerd/nerdctl/releases/download/v${version}/nerdctl-full-${version}-linux-${arch}.tar.gz
@@ -675,14 +675,11 @@ actions:
     ln -s /usr/local/libexec/cni/* /opt/cni/bin/ 
      
     # Install Go
-    gover=1.18.3
+    gover=1.19.3
     wget https://golang.org/dl/go${gover}.linux-${arch}.tar.gz
     rm -rf /usr/local/go && tar -C /usr/local -xzf go${gover}.linux-${arch}.tar.gz
     su scott -c "echo 'export PATH=$PATH:/usr/local/go/bin:/home/scott/go/bin' >> /home/scott/.profile" 
-    
-    # Install Az Cli
-    curl -sL https://aka.ms/InstallAzureCLIDeb | bash
-    
+     
     # Install Git Config
     su scott -c "curl -o /home/scott/.gitconfig https://raw.githubusercontent.com/scotty-c/lxc-builds/main/sources/conf/gitconfig"
     

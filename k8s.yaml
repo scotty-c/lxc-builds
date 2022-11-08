@@ -641,9 +641,6 @@ actions:
     su scott -c "curl -o /home/scott/.kubefunc https://raw.githubusercontent.com/scotty-c/lxc-builds/main/sources/conf/kubefunc"
     su scott -c "curl -o /home/scott/.functions https://raw.githubusercontent.com/scotty-c/lxc-builds/main/sources/conf/functions"
  
-    # Install Az Cli
-    curl -sL https://aka.ms/InstallAzureCLIDeb | bash
-
     # Install Kubectl
     curl -fsSL https://packages.cloud.google.com/apt/doc/apt-key.gpg | gpg --dearmor -o /usr/share/keyrings/kubernetes-archive-keyring.gpg
     echo "deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main" | tee /etc/apt/sources.list.d/kubernetes.list
@@ -660,7 +657,7 @@ actions:
     su scott -c "curl -o /home/scott/.gitconfig https://raw.githubusercontent.com/scotty-c/lxc-builds/main/sources/conf/gitconfig"
 
     # Install Go
-    gover="1.18.3"
+    gover="1.19.3"
      if [[ $(uname -i) == x86_64 ]]; then 
       arch="amd64" 
     else 
