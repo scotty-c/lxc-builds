@@ -1,7 +1,6 @@
 *.tar.xz
 rootfs.squashfs
-sources/sshkeys/id_rsa
-sources/sshkeys/id_rsa.pub
+sources/sshkeys/*
 *.swp
 disk.qcow2
 
