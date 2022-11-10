@@ -481,6 +481,7 @@ packages:
     - ssh-import-id
     - wget 
     - htop
+    - unzip
     - apt-transport-https 
     - ca-certificates
     - curl
@@ -681,9 +682,9 @@ actions:
     [ -s "\$NVM_DIR/bash_completion" ] && \. "\$NVM_DIR/bash_completion"  # This loads nvm bash_completion
     EOF
     ) >> /home/scott/.profile
-    
-    su scott -c "source .profile && nvm install node"
-    su scott -c "source .profile && npm install -g aws-cdk"
+    chown -R scott:scott /home/scott 
+    su scott -c "source /home/scott/.profile && nvm install node"
+    su scott -c "source /home/scott/.profile && npm install -g aws-cdk"
 
     # Install AWS Cli
     curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
