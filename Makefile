@@ -44,11 +44,14 @@ python:
 	lxc image rm python || true
 	sudo distrobuilder build-lxd -o image.architecture=$(ARCH) -o image.release=jammy -o image.variant=cloud -o source.url=$(URL) --import-into-lxd="python" python.yaml
 
-cdk:
-	lxc image rm cdk || true
-	sudo distrobuilder build-lxd -o image.architecture=$(ARCH) -o image.release=jammy -o image.variant=cloud -o source.url=$(URL) --import-into-lxd="cdk" cdk.yaml
+ecs:
+	lxc image rm ecs || true
+	sudo distrobuilder build-lxd -o image.architecture=$(ARCH) -o image.release=jammy -o image.variant=cloud -o source.url=$(URL) --import-into-lxd="ecs" ecs.yaml
 
+ecs-vm:
+	lxc image rm ecs-vm || true
+	sudo distrobuilder build-lxd -o image.architecture=$(ARCH) -o image.release=jammy -o image.variant=cloud -o source.url=$(URL) --import-into-lxd="ecs-vm" --vm ecs.yaml
 
-all: go rust k8s ubuntu python docker cdk
+all: go rust k8s ubuntu python docker ecs
 
 vm: k8s-vm ubuntu-vm docker-vm
