@@ -641,37 +641,17 @@ actions:
     su scott -c "curl -o /home/scott/.kubefunc https://raw.githubusercontent.com/scotty-c/lxc-builds/main/sources/conf/kubefunc"
     su scott -c "curl -o /home/scott/.functions https://raw.githubusercontent.com/scotty-c/lxc-builds/main/sources/conf/functions" 
     
-    # Install nerdctl 
-    (
-    cat <<EOF
-    export PATH=$PATH:/usr/local/nerdctl/bin
-    export CONTAINERD_SNAPSHOTTER="fuse-overlayfs"
-    EOF
-    ) >> /home/scott/.profile
+    # Install docker
+    apt-get install ca-certificates curl gnupg lsb-release -y
+    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+    echo \
+    "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu \
+    $(lsb_release -cs) stable" | tee /etc/apt/sources.list.d/docker.list > /dev/null
+    apt-get update
+    apt-get install docker-ce docker-ce-cli containerd.io -y
+    usermod -aG docker scott
+    curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
     
-    mkdir -p /home/scott/.config/containerd
-    touch /home/scott/.config/containerd/config.toml
-    (
-    cat <<EOF
-    [proxy_plugins]
-      [proxy_plugins."fuse-overlayfs"]
-        type = "snapshot"
-        address = "/run/user/1000/containerd-fuse-overlayfs.sock"
-    EOF
-    ) >> /home/scott/.config/containerd/config.toml
-    
-    if [[ $(uname -i) == x86_64 ]]; then 
-      arch="amd64" 
-    else 
-      arch="arm64" 
-    fi
-    version="1.0.0"
-    chown -R scott:scott /home/scott
-    apt install -y make uidmap iptables dbus-user-session fuse-overlayfs apparmor apparmor-utils
-    curl -OL https://github.com/containerd/nerdctl/releases/download/v${version}/nerdctl-full-${version}-linux-${arch}.tar.gz
-    tar -C /usr/local/ -xzf nerdctl-full-${version}-linux-${arch}.tar.gz
-    mkdir -p /opt/cni/bin/
-    ln -s /usr/local/libexec/cni/* /opt/cni/bin/ 
      
     # Install Node
     su scott -c "curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash"
@@ -703,11 +683,9 @@ actions:
     # Install AWS copilot
     curl -Lo /usr/local/bin/copilot https://github.com/aws/copilot-cli/releases/latest/download/copilot-linux
     chmod +x /usr/local/bin/copilot
- 
-    # Install Teraform
-    wget -O- https://apt.releases.hashicorp.com/gpg | gpg --dearmor | tee /usr/share/keyrings/hashicorp-archive-keyring.gpg
-    echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | tee /etc/apt/sources.list.d/hashicorp.list
-    apt update && apt install terraform
+    
+    # Install Pulumi
+    curl -fsSL https://get.pulumi.com/ | sh
     
     # Enable systemd-networkd
     systemctl enable systemd-networkd
@@ -759,10 +737,13 @@ actions:
     mv /etc/sshkeys/id_rsa /home/scott/.ssh/
     mv /etc/sshkeys/id_rsa.pub /home/scott/.ssh/
     mkdir -p /home/scott/.aws/
+    mkdir -p /home/scott/.pulumi/
     chown -R scott:scott /home/scott/.ssh/
     chown -R scott:scott /home/scott/.aws/
+    chown -R scott:scott /home/scott/.pulumi/
     su scott -c "chmod 600 /home/scott/.ssh/id_rsa"
     mv /etc/sshkeys/key.csv /home/scott/.aws/credentials
+    mv /etc/sshkeys/credentials.json /home/scott/.pulumi/credentials.json
   variants:
   - default
   - vm
