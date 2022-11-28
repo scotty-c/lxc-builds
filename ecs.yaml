@@ -621,6 +621,12 @@ actions:
     #!/bin/bash
     set -eux
     
+    if [[ $(uname -i) == x86_64 ]]; then 
+      arch="amd64" 
+    else 
+      arch="arm64" 
+    fi
+    
     # Get key from GitHub
     su scott -c "ssh-import-id gh:scotty-c"
     
