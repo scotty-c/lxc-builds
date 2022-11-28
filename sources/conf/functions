@@ -6,3 +6,7 @@ containerd-rootless-setuptool.sh install-buildkit
 containerd-rootless-setuptool.sh install-fuse-overlayfs
 sudo loginctl enable-linger scott
 }
+
+get-pulumi (){
+curl -fsSL https://get.pulumi.com | sh
+}
