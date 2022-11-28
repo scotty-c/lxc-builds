@@ -691,7 +691,7 @@ actions:
     chmod +x /usr/local/bin/copilot
     
     # Install Pulumi
-    curl -fsSL https://get.pulumi.com/ | sh
+     su scott -c "curl -fsSL https://get.pulumi.com/ | sh"
     
     # Enable systemd-networkd
     systemctl enable systemd-networkd
