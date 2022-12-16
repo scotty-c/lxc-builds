@@ -657,20 +657,6 @@ actions:
     apt-get install docker-ce docker-ce-cli containerd.io -y
     usermod -aG docker scott
     curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-    
-     
-    # Install Node
-    su scott -c "curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash"
-    (
-    cat <<EOF
-    export NVM_DIR="/home/scott/.nvm"
-    [ -s "\$NVM_DIR/nvm.sh" ] && \. "\$NVM_DIR/nvm.sh"  # This loads nvm
-    [ -s "\$NVM_DIR/bash_completion" ] && \. "\$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-    EOF
-    ) >> /home/scott/.profile
-    chown -R scott:scott /home/scott 
-    su scott -c "source /home/scott/.profile && nvm install node"
-    su scott -c "source /home/scott/.profile && npm install -g aws-cdk"
 
     # Install AWS Cli
     curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
