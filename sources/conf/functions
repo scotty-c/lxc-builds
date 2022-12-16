@@ -33,3 +33,8 @@ IMAGE="$@"
 ID=$(aws sts get-caller-identity --query "Account" --no-cli-pager --output text)
 docker tag ${IMAGE}:latest $ID.dkr.ecr.ap-southeast-2.amazonaws.com/${IMAGE}:latest
 }
+
+ecr-create-repo () {
+IMAGE="$@"
+aws ecr create-repository --repository-name ${IMAGE} --region ap-southeast-2
+}
