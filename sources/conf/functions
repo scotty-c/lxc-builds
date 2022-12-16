@@ -10,3 +10,8 @@ sudo loginctl enable-linger scott
 get-pulumi (){
 curl -fsSL https://get.pulumi.com | sh
 }
+
+ecr-login (){
+ID=$(aws sts get-caller-identity --query "Account" --no-cli-pager --output text)
+aws ecr get-login-password --region ap-southeast-2 | docker login --username AWS --password-stdin $ID.dkr.ecr.ap-southeast-2.amazonaws.com
+}
