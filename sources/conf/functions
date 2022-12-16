@@ -21,3 +21,9 @@ IMAGE="$@"
 ID=$(aws sts get-caller-identity --query "Account" --no-cli-pager --output text)
 docker push $ID.dkr.ecr.ap-southeast-2.amazonaws.com/$IMAGE
 }
+
+ecr-pull (){
+IMAGE="$@"
+ID=$(aws sts get-caller-identity --query "Account" --no-cli-pager --output text)
+docker pull $ID.dkr.ecr.ap-southeast-2.amazonaws.com/$IMAGE
+}
