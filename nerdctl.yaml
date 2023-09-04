@@ -482,7 +482,6 @@ packages:
     - ssh-import-id
     - wget 
     - htop
-    - unzip
     - apt-transport-https 
     - ca-certificates
     - curl
@@ -611,11 +610,11 @@ actions:
     # Create the ubuntu user account
     getent group sudo >/dev/null 2>&1 || groupadd --system sudo
     useradd --create-home -s /bin/bash -G sudo -U scott
-    echo "scott  ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/scott
+    echo "scott  ALL=(ALL) NOPASSWD:ALL" | tee /etc/sudoers.d/scott
 
   variants:
   - default
-  - cloud 
+  - cloud  
 
 - trigger: post-packages
   action: |-
@@ -641,7 +640,8 @@ actions:
     su scott -c "curl -o /home/scott/.alias https://raw.githubusercontent.com/scotty-c/lxc-builds/main/sources/conf/alias"
     su scott -c "curl -o /home/scott/.kubefunc https://raw.githubusercontent.com/scotty-c/lxc-builds/main/sources/conf/kubefunc"
     su scott -c "curl -o /home/scott/.functions https://raw.githubusercontent.com/scotty-c/lxc-builds/main/sources/conf/functions"
-
+ 
+    
     # Install nerdctl 
     (
     cat <<EOF
@@ -660,7 +660,7 @@ actions:
         address = "/run/user/1000/containerd-fuse-overlayfs.sock"
     EOF
     ) >> /home/scott/.config/containerd/config.toml
-
+    
     if [[ $(uname -i) == x86_64 ]]; then 
       arch="amd64" 
     else 
@@ -676,11 +676,6 @@ actions:
      
     # Install Git Config
     su scott -c "curl -o /home/scott/.gitconfig https://raw.githubusercontent.com/scotty-c/lxc-builds/main/sources/conf/gitconfig"
-
-    # Install AWS Cli
-    curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-    unzip awscliv2.zip
-    ./aws/install
     
     # Enable systemd-networkd
     systemctl enable systemd-networkd

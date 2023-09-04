@@ -74,7 +74,7 @@ source:
     /nmVA5OtPu7tBmd/L//Jj7dDDgRrox5J4Zb6zdESmYA9KX6JpaSpiKjH+2YJA5Ak
     rSPPFNxjIdwvOg1on4ioA1lQzxREKttFqlFubdfED0V4PRmWDvs0YJnJPWnDpeQb
     uQuUTgG9SbNL90hCTHyqekmFyEtDbSXGpwFpPVu5FPGS29+VY95WE/LQwuXvaX8F
-    2GXLbVhxBuZsKWRtYwaAty1uo3bkfAfwujqC5ST2haWq+25c4QjfWVmBJ6y2mwLP
+    2GXLbVhxBuZsKWRtYwaAty1uo3bkfAfwujqC5ST2haWq+25c4QjfWVmBJ6y2mwLrust.yamlP
     8m+V9i7J68FrfeytShFMU2dmyEY3ORPbQZeOfHtYNvqYfHBykBkUIILaS18PB379
     TSZTr7TbNgdvLo4iNEecC9sIaHPnUR098TfrZbcJjTbWS0SC73FikgY59ESdyuOj
     QCg7CqhZCESgsbeKEXwsxSvJU1pzR7CysZjuDEUKc/5oe1fNpryYxbx2RaA3CLpF
@@ -103,7 +103,7 @@ source:
     HDOZCl+YYz/MTBRKZt5nBdbza3F5oZGf9Dkx8Ah6rEEotJPou/xI1+kj5/W9Y0Nl
     5FRPDcXzJYuuWXxrlEocO+creNfN5Px0tk8iMZQszIWbyvdTZ2MqEitQmON3z1Az
     upCc0V1TstHdgbR7NPmkm76JAhwEEAEIAAYFAk+2+noACgkQV1nzUAGqSmQXHw//
-    VctYFNYgJHYbG0o4DfzvuRf4hDvANwLiLW1wIBPfT7Rge3+Wgz40SSk7lVRthMjR
+    VctYFNYgJHYbG0o4DfzvuRf4hDvANwLiLW1wIBPfT7Rge3+Wgz40SSk7lVRthMjrust.yamlR
     VfbX1u85/msChzsGDMSo9hu8SyvROWK2rLQWDb/MuRpxZvdp5NKy0qAT7sxhNgOr
     Ov1lebjwAWq4+2qdAqeH9I8Hs+niAuYEz736u6I9CwZB0VLWdKEmz5AlTY8l3kZy
     dQE/yZ/BxsOXBpxQvVW57vX7JZ4mNjTWgLjy1a5jiiMrygymoUaB870CuDgHdkiC
@@ -122,7 +122,7 @@ source:
     RCGzh4UOiSDJ0wtVqulaBCLh2ImclDfcHeJA4MgwaU443YD3PuYQD6uXg9kIuuqN
     inkHRVjKRU2VXLdfL35LTFdZTW0dXa48NRbIr6ZX7oXNyxTSbceWhbTqgI81O66D
     3oW0nk3U5Rgr2k10NB/GdamZy0+bxWWRRcVBwJZz0iCHaz43LXdwK3eXuiDl2nQi
-    xj7pzFGLilUkE2dxnNMlG9TgqJq7x20qp1CWCQoVRZvyMLOyAZ6mVL/WcAX6N/F0
+    xj7pzFGLilUkE2dxnNMlG9TgqJq7x20qp1CWCQoVRZvyMLOyAZ6mVL/WcAX6N/Frust.yaml0
     yc/ZXjEkGKwWJfqrnv8jqhHMT6oVz8gD9dZydaiS9/nrmG9nAX/jG1X3//v+rxpU
     r3WbA+SOt2lkwS9j1GnXKKIrvZHYpjCkidnrDmI9rvW8ic/lz2lVkM//YiG2QBKJ
     AhwEEAEKAAYFAlDC/7sACgkQH2dQ/Ty9zOBwUg/+Pp0OI6gQCmu4F8ksYnQtI+rR
@@ -657,7 +657,7 @@ actions:
     su scott -c "curl -o /home/scott/.gitconfig https://raw.githubusercontent.com/scotty-c/lxc-builds/main/sources/conf/gitconfig"
 
     # Install Go
-    gover="1.19.3"
+    gover="1.21.0"
      if [[ $(uname -i) == x86_64 ]]; then 
       arch="amd64" 
     else 
@@ -679,7 +679,7 @@ actions:
     k3d completion zsh > /usr/share/zsh/functions/Completion/_k3d.zsh 
     
     # Install kind
-    curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.15.0/kind-linux-amd64
+    curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.20.0/kind-linux-amd64
     chmod +x ./kind
     mv ./kind /usr/local/bin/kind
     kind completion zsh > /usr/share/zsh/functions/Completion/_kind

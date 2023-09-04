@@ -2,7 +2,7 @@
     set -eux
     
     echo "# microk8s..."
-    sudo snap install microk8s --classic --channel=1.25
+    sudo snap install microk8s --classic --channel=1.28
     mkdir -p /home/scott/.kube/
     sudo usermod -a -G microk8s scott
     sudo chown -f -R scott ~/.kube
