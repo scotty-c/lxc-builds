@@ -52,6 +52,10 @@ ecs-vm:
 	lxc image rm ecs-vm || true
 	sudo distrobuilder build-lxd -o image.architecture=$(ARCH) -o image.release=jammy -o image.variant=cloud -o source.url=$(URL) --import-into-lxd="ecs-vm" --vm ecs.yaml
 
+nerd-vm:
+	lxc image rm nerd-vm || true
+	sudo distrobuilder build-lxd -o image.architecture=$(ARCH) -o image.release=jammy -o image.variant=cloud -o source.url=$(URL) --import-into-lxd="nerd-vm" --vm nerdctl.yaml	
+
 all: go rust k8s ubuntu python docker ecs
 
 vm: k8s-vm ubuntu-vm docker-vm
