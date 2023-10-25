@@ -56,6 +56,11 @@ nerd-vm:
 	lxc image rm nerd-vm || true
 	sudo distrobuilder build-lxd -o image.architecture=$(ARCH) -o image.release=jammy -o image.variant=cloud -o source.url=$(URL) --import-into-lxd="nerd-vm" --vm nerdctl.yaml	
 
+kali-vm:
+	lxc image rm kali-vm || true
+	sudo distrobuilder build-lxd -o image.architecture=$(ARCH) -o image.release=kali-rolling -o image.variant=cloud -o source.url=https://kali.download/kali/ --import-into-lxd="kali-vm" --vm kali.yaml	
+
+
 all: go rust k8s ubuntu python docker ecs
 
 vm: k8s-vm ubuntu-vm docker-vm
