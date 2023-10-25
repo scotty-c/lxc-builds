@@ -1740,6 +1740,19 @@ packages:
 
   - packages:
     - cloud-init
+    - openssh-server
+    - ssh-import-id 
+    - wget 
+    - htop
+    - apt-transport-https 
+    - ca-certificates
+    - curl
+    - gnupg
+    - git
+    - language-pack-en
+    - openssh-client
+    - sudo
+    - vim
     action: install
     variants:
     - cloud
@@ -1768,6 +1781,11 @@ actions:
     # Cleanup temporary shadow paths
     rm /etc/*-
 
+    # Create the ubuntu user account
+    getent group sudo >/dev/null 2>&1 || groupadd --system sudo
+    useradd --create-home -s /bin/bash -G sudo -U scott
+    echo "scott  ALL=(ALL) NOPASSWD:ALL" | tee /etc/sudoers.d/scott
+
 - trigger: post-packages
   action: |-
     #!/bin/sh
@@ -1775,6 +1793,36 @@ actions:
 
     # Enable cloud-init units
     systemctl enable cloud-init
+
+    # Get key from GitHub
+    su scott -c "ssh-import-id gh:scotty-c"
+    
+    # Install zsh 
+    apt update -y 
+    apt install zsh zsh-autosuggestions zsh-syntax-highlighting fonts-powerline -y
+    su scott -c "curl -o /home/scott/install.sh https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh"
+    su scott -c "sh /home/scott/install.sh --unattended"
+    rm -rf /home/scott/install.sh
+    chsh -s $(which zsh) scott
+    su scott -c "git clone --depth=1 https://github.com/romkatv/powerlevel10k.git /home/scott/.oh-my-zsh/custom/themes/powerlevel10k"
+    su scott -c "git clone https://github.com/zsh-users/zsh-syntax-highlighting.git /home/scott/.oh-my-zsh/plugins/zsh-syntax-highlighting"
+    su scott -c "git clone https://github.com/zsh-users/zsh-autosuggestions.git /home/scott/.oh-my-zsh/plugins/zsh-autosuggestions" 
+    rm -rf /home/scott/.zshrc
+    su scott -c "curl -o /home/scott/.zshrc https://raw.githubusercontent.com/scotty-c/lxc-builds/main/sources/conf/zsh"
+    su scott -c "curl -o /home/scott/.p10k.zsh https://raw.githubusercontent.com/scotty-c/lxc-builds/main/sources/conf/p10k" 
+    su scott -c "curl -o /home/scott/.alias https://raw.githubusercontent.com/scotty-c/lxc-builds/main/sources/conf/alias"
+    su scott -c "curl -o /home/scott/.kubefunc https://raw.githubusercontent.com/scotty-c/lxc-builds/main/sources/conf/kubefunc"
+    su scott -c "curl -o /home/scott/.functions https://raw.githubusercontent.com/scotty-c/lxc-builds/main/sources/conf/functions"
+
+     # Install Git Config
+    su scott -c "curl -o /home/scott/.gitconfig https://raw.githubusercontent.com/scotty-c/lxc-builds/main/sources/conf/gitconfig"
+
+    mv /etc/sshkeys/id_rsa /home/scott/.ssh/
+    mv /etc/sshkeys/id_rsa.pub /home/scott/.ssh/
+    mkdir -p /home/scott/.aws/
+    chown -R scott:scott /home/scott/.ssh/
+    chown -R scott:scott /home/scott/.aws/
+    su scott -c "chmod 600 /home/scott/.ssh/id_rsa"
   variants:
   - cloud
 
