@@ -1749,7 +1749,6 @@ packages:
     - curl
     - gnupg
     - git
-    - language-pack-en
     - openssh-client
     - sudo
     - vim
