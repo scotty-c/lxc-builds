@@ -1752,7 +1752,7 @@ packages:
     - openssh-client
     - sudo
     - vim
-    - kali-tweak
+    - kali-tweaks
     action: install
     variants:
     - cloud
