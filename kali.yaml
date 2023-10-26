@@ -1752,6 +1752,7 @@ packages:
     - openssh-client
     - sudo
     - vim
+    - kali-tweak
     action: install
     variants:
     - cloud
@@ -1803,18 +1804,13 @@ actions:
     su scott -c "sh /home/scott/install.sh --unattended"
     rm -rf /home/scott/install.sh
     chsh -s $(which zsh) scott
-    su scott -c "git clone --depth=1 https://github.com/romkatv/powerlevel10k.git /home/scott/.oh-my-zsh/custom/themes/powerlevel10k"
-    su scott -c "git clone https://github.com/zsh-users/zsh-syntax-highlighting.git /home/scott/.oh-my-zsh/plugins/zsh-syntax-highlighting"
-    su scott -c "git clone https://github.com/zsh-users/zsh-autosuggestions.git /home/scott/.oh-my-zsh/plugins/zsh-autosuggestions" 
-    rm -rf /home/scott/.zshrc
-    su scott -c "curl -o /home/scott/.zshrc https://raw.githubusercontent.com/scotty-c/lxc-builds/main/sources/conf/zsh"
-    su scott -c "curl -o /home/scott/.p10k.zsh https://raw.githubusercontent.com/scotty-c/lxc-builds/main/sources/conf/p10k" 
-    su scott -c "curl -o /home/scott/.alias https://raw.githubusercontent.com/scotty-c/lxc-builds/main/sources/conf/alias"
-    su scott -c "curl -o /home/scott/.kubefunc https://raw.githubusercontent.com/scotty-c/lxc-builds/main/sources/conf/kubefunc"
-    su scott -c "curl -o /home/scott/.functions https://raw.githubusercontent.com/scotty-c/lxc-builds/main/sources/conf/functions"
-
-     # Install Git Config
+ 
+    # Install Git Config
     su scott -c "curl -o /home/scott/.gitconfig https://raw.githubusercontent.com/scotty-c/lxc-builds/main/sources/conf/gitconfig"
+
+    # Start ssh
+    systemctl enable ssh
+
   variants:
   - cloud
 
