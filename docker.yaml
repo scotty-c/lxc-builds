@@ -716,7 +716,6 @@ actions:
     chown -R scott:scott /home/scott/.aws/
     su scott -c "chmod 600 /home/scott/.ssh/id_rsa"
     mv /etc/sshkeys/key.csv /home/scott/.aws/credentials
-    su scott -c "chmod 600 /home/scott/.aws/credentials"
   variants:
   - default
   - vm
