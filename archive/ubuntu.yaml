@@ -4,7 +4,7 @@ image:
 source:
   downloader: debootstrap
   same_as: gutsy
-  url: http://archive.ubuntu.com/ubuntu/
+  url: http://archive.ubuntu.com/ubuntu
   keys:
   # 0x790BC7277767219C42C86F933B4FE6ACC0B21F32
   - |-
@@ -331,7 +331,6 @@ files:
 
 - path: /etc/netplan/10-lxc.yaml
   generator: dump
-  mode: 0600
   content: |-
     network:
       version: 2
@@ -342,10 +341,9 @@ files:
   releases:
   - bionic
   - focal
+  - hirsute
+  - impish
   - jammy
-  - lunar
-  - mantic
-  - noble
   types:
   - container
   variants:
@@ -372,7 +370,6 @@ files:
 
 - path: /etc/netplan/10-lxc.yaml
   generator: dump
-  mode: 0600
   content: |-
     network:
       version: 2
@@ -383,10 +380,9 @@ files:
   releases:
   - bionic
   - focal
+  - hirsute
+  - impish
   - jammy
-  - lunar
-  - mantic
-  - noble
   types:
   - vm
   variants:
@@ -437,12 +433,12 @@ files:
   types:
   - vm
 
-- name: incus-agent
-  generator: incus-agent
+- name: lxd-agent
+  generator: lxd-agent
   types:
   - vm
 
-- path: /etc/default/grub.d/50-incus.cfg
+- path: /etc/default/grub.d/50-lxd.cfg
   generator: dump
   content: |-
     GRUB_RECORDFAIL_TIMEOUT=0
@@ -452,7 +448,7 @@ files:
   types:
   - vm
 
-- path: /etc/sudoers.d/90-incus
+- path: /etc/sudoers.d/90-lxd
   generator: dump
   mode: 0440
   content: |-
@@ -461,23 +457,13 @@ files:
   variants:
     - default
 
-- path: /etc/sudoers.d/90-incus
-  generator: dump
-  mode: 0440
-  content: |-
-    # User rules for ubuntu
-    scott ALL=(ALL) NOPASSWD:ALL
-  variants:
-  - desktop
-  types:
-  - vm
 - path: /etc/sshkeys/
   generator: copy
   source: sources/sshkeys/
   variants:
     - default
     - cloud 
-    - vm 
+    - vm  
 
 packages:
   manager: apt
@@ -486,76 +472,31 @@ packages:
   sets:
   - packages:
     - fuse
-    releases:
-    - xenial
-    - bionic
-    - focal
-    action: install
-
-  - packages:
-    - fuse3
-    releases:
-    - jammy
-    - lunar
-    - mantic
-    - noble
-    action: install
-
-  - packages:
+    - git  
+    - language-pack-en
     - openssh-client
     - sudo
     - vim
-    - git
-    - curl
-    - wget
+    - openssh-server
+    - build-essential
+    - ssh-import-id
+    - wget 
+    - htop
+    - unzip
+    - apt-transport-https 
     - ca-certificates
+    - curl
     - gnupg
     - lsb-release
-    - net-tools
-    - openssh-server
-    - ssh-import-id
-    - build-essential
-    - btop 
-    - unzip
-    - apt-transport-https
     action: install
-
-  - packages:
-    - language-pack-en
-    action: install
-    architectures:
-    - amd64
-    - arm64
-    - armhf
-    - powerpc
-    - powerpc64
-
-  - packages:
-    - language-pack-en
-    action: install
-    architectures:
-    - ppc64el
-    releases:
-    - xenial
-    - bionic
-    - jammy
-    - lunar
-    - mantic
-    - noble
 
   - packages:
     - cloud-init
+    - openssh-client
+    - ssh-import-id  
     action: install
     variants:
     - cloud
-
-  - packages:
-    - systemd-resolved
-    action: install
-    releases:
-    - lunar
-    - mantic
-    - noble
 
   - packages:
     - acpid
@@ -563,8 +504,6 @@ packages:
     architectures:
     - amd64
     - arm64
-    releases:
-    - xenial
     types:
     - vm
 
@@ -591,16 +530,17 @@ packages:
     architectures:
     - arm64
     releases:
+    - disco
+    - eoan
     - focal
+    - hirsute
+    - impish
     - jammy
-    - lunar
-    - mantic
-    - noble
     types:
     - vm
 
   - packages:
-    - linux-image-virtual-hwe-16.04
+    - linux-virtual-hwe-16.04
     action: install
     releases:
     - xenial
@@ -608,15 +548,16 @@ packages:
     - vm
 
   - packages:
-    - linux-image-virtual
+    - linux-virtual
+    - snapd  
     action: install
     releases:
     - bionic
+    - eoan
     - focal
+    - hirsute
+    - impish
     - jammy
-    - lunar
-    - mantic
-    - noble
     types:
     - vm
 
@@ -633,12 +574,11 @@ packages:
     - vm
 
   - packages:
+    - linux-image-generic
     - ubuntu-desktop-minimal
     action: install
     variants:
     - desktop
-    types:
-    - vm
 
   repositories:
   - name: sources.list
@@ -662,7 +602,6 @@ packages:
     - powerpc64
     - ppc64el
     - riscv64
-
 actions:
 - trigger: post-update
   action: |-
@@ -672,16 +611,18 @@ actions:
     # Create the ubuntu user account
     getent group sudo >/dev/null 2>&1 || groupadd --system sudo
     useradd --create-home -s /bin/bash -G sudo -U scott
-     echo "scott  ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/scott
+    echo "scott  ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/scott
+
   variants:
   - default
+  - cloud 
 
 - trigger: post-packages
   action: |-
-    #!/bin/sh
+    #!/bin/bash
     set -eux
     
-      # Get key from GitHub
+    # Get key from GitHub
     su scott -c "ssh-import-id gh:scotty-c"
     
     # Install zsh 
@@ -740,28 +681,15 @@ actions:
     curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
     unzip awscliv2.zip
     ./aws/install
-
+    
     # Enable systemd-networkd
     systemctl enable systemd-networkd
   releases:
   - bionic
   - focal
+  - hirsute
+  - impish
   - jammy
-  - lunar
-  - mantic
-  - noble
-
-- trigger: post-packages
-  action: |-
-    #!/bin/sh
-    set -eux
-
-    # Ensure /etc/resolv.conf is symlinked to /run/systemd/resolve/stub-resolv.conf
-    ln -sf ../run/systemd/resolve/stub-resolv.conf /etc/resolv.conf
-  releases:
-  - lunar
-  - mantic
-  - noble
 
 - trigger: post-packages
   action: |-
@@ -769,6 +697,7 @@ actions:
     set -eux
 
     # Make sure the locale is built and functional
+
     locale-gen en_US.UTF-8
     update-locale LANG=en_US.UTF-8
 
@@ -795,100 +724,6 @@ actions:
   types:
   - vm
 
-- trigger: post-files
-  action: |-
-    #!/bin/sh
-    set -eux
-
-    # Automatic disk resize
-    cat << EOF > /etc/systemd/system/incus-growpart.service
-    [Unit]
-    Description=LXD - grow root partition
-
-    [Service]
-    Type=oneshot
-    ExecStartPre=-/usr/bin/growpart /dev/sda 2
-    ExecStart=/sbin/resize2fs /dev/sda2
-
-    [Install]
-    WantedBy=default.target
-    EOF
-    systemctl enable incus-growpart
-  types:
-  - vm
-  variants:
-  - default
-  - desktop
-
-- trigger: post-packages
-  action: |-
-    #!/bin/sh
-    set -eux
-
-    # Disable location service
-    systemctl mask geoclue.service || true
-
-    # Timezone
-    rm -f /etc/localtime
-    ln -s /usr/share/zoneinfo/UTC /etc/localtime
-    echo UTC > /etc/timezone
-
-    # Locale
-    echo en_US.UTF-8 UTF-8 > /etc/locale.gen
-    locale-gen
-    echo LANG=en_US.UTF-8 > /etc/locale.conf
-
-    # User
-    USERNAME="scott"
-    useradd ${USERNAME} -s /bin/bash -m -U -G adm,video,users
-
-    cat << EOF > /etc/gdm3/custom.conf
-    [daemon]
-    AutomaticLogin=${USERNAME}
-    AutomaticLoginEnable=true
-    EOF
-
-    cat << EOF > /home/ubuntu/firstboot.sh
-    #!/bin/sh
-
-    set -e
-
-    # Disable automatic screensaver lock
-    gsettings set org.gnome.desktop.screensaver lock-enabled false
-
-    # Disable welcome tour.
-    gsettings set org.gnome.shell welcome-dialog-last-shown-version '4294967295'
-
-    # Delete this script
-    rm /home/scott/firstboot.sh
-    EOF
-
-    chown scott:scott /home/scott/firstboot.sh
-    chmod +x /home/scott/firstboot.sh
-
-    cat << EOF > /etc/systemd/user/firstboot.service
-    [Unit]
-    Description=One time boot script
-    After=dbus.service
-    After=display-manager.service
-    ConditionPathExists=/home/scott/firstboot.sh
-
-    [Service]
-    Type=oneshot
-    ExecStart=/home/scott/firstboot.sh
-
-    [Install]
-    WantedBy=default.target
-    EOF
-
-    mkdir -p /home/scott/.config/systemd/user/default.target.wants
-    ln -s /etc/systemd/user/firstboot.service /home/ubuntu/.config/systemd/user/default.target.wants/firstboot.service
-
-    chown -R scott:scott /home/ubuntu/.config
-  variants:
-  - desktop
-  types:
-  - vm
 
 - trigger: post-files
   action: |-
@@ -905,7 +740,55 @@ actions:
   variants:
   - default
   - vm
-  - cloud
+  - cloud  
+
+- trigger: post-packages
+  action: |-
+    #!/bin/sh
+    set -eux
+
+    # Timezone
+    rm -f /etc/localtime
+    ln -s /usr/share/zoneinfo/UTC /etc/localtime
+    echo UTC > /etc/timezone
+
+    # Locale
+    echo en_US.UTF-8 UTF-8 > /etc/locale.gen
+    locale-gen
+    echo LANG=en_US.UTF-8 > /etc/locale.conf
+
+    # User
+    USERNAME="scott"
+    useradd ${USERNAME} -s /bin/bash -m -U -G adm,video,users
+    echo "${USERNAME} ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/${USERNAME}
+    chmod 600 /etc/sudoers.d/${USERNAME}
+
+    (
+    cat << EOF
+    [daemon]
+    AutomaticLogin=${USERNAME}
+    AutomaticLoginEnable=true
+    EOF
+    ) > /etc/gdm3/custom.conf
+
+    # Automatic disk resize
+    (
+    cat << EOF
+    [Unit]
+    Description=LXD - grow root partition
+
+    [Service]
+    Type=oneshot
+    ExecStartPre=-/usr/bin/growpart /dev/sda 2
+    ExecStart=/usr/sbin/resize2fs /dev/sda2
+
+    [Install]
+    WantedBy=default.target
+    EOF
+    ) > /etc/systemd/system/lxd-growpart.service
+    systemctl enable lxd-growpart
+  variants:
+  - desktop
 
 mappings:
   architecture_map: debian
