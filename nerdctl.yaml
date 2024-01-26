@@ -666,7 +666,7 @@ actions:
     else 
       arch="arm64" 
     fi
-    version="1.5.0"
+    version="1.7.2"
     chown -R scott:scott /home/scott
     apt install -y make uidmap iptables dbus-user-session fuse-overlayfs apparmor apparmor-utils
     curl -OL https://github.com/containerd/nerdctl/releases/download/v${version}/nerdctl-full-${version}-linux-${arch}.tar.gz
