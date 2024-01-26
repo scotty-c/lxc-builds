@@ -657,7 +657,7 @@ actions:
     su scott -c "curl -o /home/scott/.gitconfig https://raw.githubusercontent.com/scotty-c/lxc-builds/main/sources/conf/gitconfig"
 
     # Install Go
-    gover="1.21.0"
+    gover="1.21.6"
      if [[ $(uname -i) == x86_64 ]]; then 
       arch="amd64" 
     else 
