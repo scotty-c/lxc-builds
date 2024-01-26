@@ -641,38 +641,6 @@ actions:
     su scott -c "curl -o /home/scott/.alias https://raw.githubusercontent.com/scotty-c/lxc-builds/main/sources/conf/alias"
     su scott -c "curl -o /home/scott/.kubefunc https://raw.githubusercontent.com/scotty-c/lxc-builds/main/sources/conf/kubefunc"
     su scott -c "curl -o /home/scott/.functions https://raw.githubusercontent.com/scotty-c/lxc-builds/main/sources/conf/functions"
-
-    # Install nerdctl 
-    (
-    cat <<EOF
-    export PATH=$PATH:/usr/local/nerdctl/bin
-    export CONTAINERD_SNAPSHOTTER="fuse-overlayfs"
-    EOF
-    ) >> /home/scott/.profile
-    
-    mkdir -p /home/scott/.config/containerd
-    touch /home/scott/.config/containerd/config.toml
-    (
-    cat <<EOF
-    [proxy_plugins]
-      [proxy_plugins."fuse-overlayfs"]
-        type = "snapshot"
-        address = "/run/user/1000/containerd-fuse-overlayfs.sock"
-    EOF
-    ) >> /home/scott/.config/containerd/config.toml
-
-    if [[ $(uname -i) == x86_64 ]]; then 
-      arch="amd64" 
-    else 
-      arch="arm64" 
-    fi
-    version="1.5.0"
-    chown -R scott:scott /home/scott
-    apt install -y make uidmap iptables dbus-user-session fuse-overlayfs apparmor apparmor-utils
-    curl -OL https://github.com/containerd/nerdctl/releases/download/v${version}/nerdctl-full-${version}-linux-${arch}.tar.gz
-    tar -C /usr/local/ -xzf nerdctl-full-${version}-linux-${arch}.tar.gz
-    mkdir -p /opt/cni/bin/
-    ln -s /usr/local/libexec/cni/* /opt/cni/bin/ 
      
     # Install Git Config
     su scott -c "curl -o /home/scott/.gitconfig https://raw.githubusercontent.com/scotty-c/lxc-builds/main/sources/conf/gitconfig"
