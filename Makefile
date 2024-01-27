@@ -58,4 +58,4 @@ nerd-vm:
 
 all: go rust k8s ubuntu python docker ecs
 
-vm: k8s-vm ubuntu-vm docker-vm
+vm: k8s-vm ubuntu-vm docker-vm nerd-vm
