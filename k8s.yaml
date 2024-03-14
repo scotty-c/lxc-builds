@@ -699,6 +699,9 @@ actions:
     curl -o /home/scott/microk8s.sh https://raw.githubusercontent.com/scotty-c/lxc-builds/main/sources/scripts/microk8s.sh
     chmod +x /home/scott/microk8s.sh
     chown scott:scott /home/scott/microk8s.sh
+    curl -o /home/scott/kubespin.sh.sh https://raw.githubusercontent.com/scotty-c/lxc-builds/main/sources/scripts/kubespin.sh
+    chmod +x /home/scott/kubespin.sh
+    chown scott:scott /home/scott/kubespin.sh
     
     # Browser for x forwrding 
     wget -O- https://repo.vivaldi.com/archive/linux_signing_key.pub | gpg --dearmor | tee /usr/share/keyrings/vivaldi.gpg
