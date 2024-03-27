@@ -674,15 +674,9 @@ actions:
     ln -s /opt/kubectx/completion/_kubectx.zsh /usr/share/zsh/functions/Completion/_kubectx.zsh
     ln -s /opt/kubectx/completion/_kubens.zsh /usr/share/zsh/functions/Completion/_kubens.zsh
 
-    # Install k3d
-    wget -q -O - https://raw.githubusercontent.com/k3d-io/k3d/main/install.sh | bash
-    k3d completion zsh > /usr/share/zsh/functions/Completion/_k3d.zsh 
-    
-    # Install kind
-    curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.20.0/kind-linux-amd64
-    chmod +x ./kind
-    mv ./kind /usr/local/bin/kind
-    kind completion zsh > /usr/share/zsh/functions/Completion/_kind
+    # Install spin
+    curl -fsSL https://developer.fermyon.com/downloads/install.sh | bash
+    spin /usr/local/bin/
     
     # Install Docker
     apt-get install ca-certificates curl gnupg lsb-release -y
