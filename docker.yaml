@@ -707,7 +707,6 @@ actions:
     mv /etc/sshkeys/id_rsa /home/scott/.ssh/
     mv /etc/sshkeys/id_rsa.pub /home/scott/.ssh/
     chown -R scott:scott /home/scott/.ssh/
-    chown -R scott:scott /home/scott/.aws/
     su scott -c "chmod 600 /home/scott/.ssh/id_rsa"
   variants:
   - default
