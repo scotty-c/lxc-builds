@@ -44,14 +44,6 @@ python:
 	incus image rm python || true
 	sudo distrobuilder build-incus -o image.architecture=$(ARCH) -o image.release=jammy -o image.variant=cloud -o source.url=$(URL) --import-into-incus="python" python.yaml
 
-ecs:
-	incus image rm ecs || true
-	sudo distrobuilder build-incus -o image.architecture=$(ARCH) -o image.release=jammy -o image.variant=cloud -o source.url=$(URL) --import-into-incus="ecs" ecs.yaml
-
-ecs-vm:
-	incus image rm ecs-vm || true
-	sudo distrobuilder build-incus -o image.architecture=$(ARCH) -o image.release=jammy -o image.variant=cloud -o source.url=$(URL) --import-into-incus="ecs-vm" --vm ecs.yaml
-
 nerd-vm:
 	incus image rm nerd-vm || true
 	sudo distrobuilder build-incus -o image.architecture=$(ARCH) -o image.release=jammy -o image.variant=cloud -o source.url=$(URL) --import-into-incus="nerd-vm" --vm nerdctl.yaml	
