@@ -26,7 +26,7 @@ k8s-vm:
 
 ubuntu-vm:
 	incus image rm ubuntu-vm || true
-	sudo distrobuilder build-incus -o image.architecture=$(ARCH) -o image.release=jammy -o image.variant=cloud -o source.url=$(URL) --import-into-incus="ubuntu-vm" --vm  ubuntu.yaml
+	sudo distrobuilder build-incus -o image.architecture=$(ARCH) -o image.release=noble -o image.variant=cloud -o source.url=$(URL) --import-into-incus="ubuntu-vm" --vm  ubuntu.yaml
 
 ubuntu:
 	incus image rm ubuntu || true
