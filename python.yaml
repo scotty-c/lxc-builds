@@ -725,7 +725,7 @@ actions:
   action: |-
     #!/bin/sh
     set -eux
-
+    su scott -c "mkdir -p /home/scott/.ssh/"
     mv /etc/sshkeys/id_rsa /home/scott/.ssh/
     mv /etc/sshkeys/id_rsa.pub /home/scott/.ssh/
     chown -R scott:scott /home/scott/.ssh/
