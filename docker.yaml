@@ -344,6 +344,7 @@ files:
   - hirsute
   - impish
   - jammy
+  - noble
   types:
   - container
   variants:
@@ -383,6 +384,7 @@ files:
   - hirsute
   - impish
   - jammy
+  - noble
   types:
   - vm
   variants:
@@ -481,7 +483,7 @@ packages:
     - build-essential
     - ssh-import-id
     - wget 
-    - htop
+    - btop
     - unzip
     - apt-transport-https 
     - ca-certificates
@@ -536,6 +538,7 @@ packages:
     - hirsute
     - impish
     - jammy
+    - noble
     types:
     - vm
 
@@ -558,6 +561,7 @@ packages:
     - hirsute
     - impish
     - jammy
+    - noble
     types:
     - vm
 
@@ -664,6 +668,7 @@ actions:
   - hirsute
   - impish
   - jammy
+  - noble
 
 - trigger: post-packages
   action: |-
