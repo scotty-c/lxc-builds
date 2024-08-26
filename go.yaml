@@ -645,7 +645,30 @@ actions:
     su scott -c "curl -o /home/scott/.kubefunc https://raw.githubusercontent.com/scotty-c/lxc-builds/main/sources/conf/kubefunc"
     su scott -c "curl -o /home/scott/.functions https://raw.githubusercontent.com/scotty-c/lxc-builds/main/sources/conf/functions"
  
+    # Install Go
+    gover=1.21.6
+    wget https://golang.org/dl/go${gover}.linux-${arch}.tar.gz
+    rm -rf /usr/local/go && tar -C /usr/local -xzf go${gover}.linux-${arch}.tar.gz
+    su scott -c "echo 'export PATH=$PATH:/usr/local/go/bin:/home/scott/go/bin' >> /home/scott/.profile" 
+     
+    # Install Git Config
+    su scott -c "curl -o /home/scott/.gitconfig https://raw.githubusercontent.com/scotty-c/lxc-builds/main/sources/conf/gitconfig"
+    
+    # Enable systemd-networkd
+    systemctl enable systemd-networkd
+  releases:
+  - bionic
+  - focal
+  - hirsute
+  - impish
+  - jammy
+  - noble
 
+- trigger: post-packages
+  action: |-
+    #!/bin/bash
+    set -eux
+    
     # Install nerdctl 
     (
     cat <<EOF
@@ -677,25 +700,33 @@ actions:
     tar -C /usr/local/ -xzf nerdctl-full-${version}-linux-${arch}.tar.gz
     mkdir -p /opt/cni/bin/
     ln -s /usr/local/libexec/cni/* /opt/cni/bin/ 
-     
-    # Install Go
-    gover=1.21.6
-    wget https://golang.org/dl/go${gover}.linux-${arch}.tar.gz
-    rm -rf /usr/local/go && tar -C /usr/local -xzf go${gover}.linux-${arch}.tar.gz
-    su scott -c "echo 'export PATH=$PATH:/usr/local/go/bin:/home/scott/go/bin' >> /home/scott/.profile" 
-     
-    # Install Git Config
-    su scott -c "curl -o /home/scott/.gitconfig https://raw.githubusercontent.com/scotty-c/lxc-builds/main/sources/conf/gitconfig"
-    
-    # Enable systemd-networkd
-    systemctl enable systemd-networkd
-  releases:
-  - bionic
-  - focal
-  - hirsute
-  - impish
-  - jammy
-  - noble
+  types:
+  - container
+
+- trigger: post-packages
+  action: |-
+    #!/bin/bash
+    set -eux
+
+    # Install docker
+    # Add Docker's official GPG key:
+    apt-get update
+    apt-get install ca-certificates curl
+    install -m 0755 -d /etc/apt/keyrings
+    curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
+    chmod a+r /etc/apt/keyrings/docker.asc
+
+   # Add the repository to Apt sources:
+  echo \
+    "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
+    $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
+    tee /etc/apt/sources.list.d/docker.list > /dev/null
+    apt-get update
+    apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+    usermod -aG docker scott
+  types:
+  - vm 
+      
 
 - trigger: post-packages
   action: |-

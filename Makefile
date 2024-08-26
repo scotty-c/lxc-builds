@@ -12,6 +12,10 @@ go:
 	incus image rm go || true
 	sudo distrobuilder build-incus -o image.architecture=$(ARCH) -o image.release=noble -o image.variant=cloud -o source.url=$(URL) --import-into-incus="go"  go.yaml
 
+go-vm:
+	incus image rm go-vm || true
+	sudo distrobuilder build-incus -o image.architecture=$(ARCH) -o image.release=noble -o image.variant=cloud -o source.url=$(URL) --import-into-incus="go-vm" --vm  go.yaml
+
 rust:
 	incus image rm rust || true
 	sudo distrobuilder build-incus -o image.architecture=$(ARCH) -o image.release=noble -o image.variant=cloud -o source.url=$(URL) --import-into-incus="rust"  rust.yaml
