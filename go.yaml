@@ -644,8 +644,13 @@ actions:
     su scott -c "curl -o /home/scott/.alias https://raw.githubusercontent.com/scotty-c/lxc-builds/main/sources/conf/alias"
     su scott -c "curl -o /home/scott/.kubefunc https://raw.githubusercontent.com/scotty-c/lxc-builds/main/sources/conf/kubefunc"
     su scott -c "curl -o /home/scott/.functions https://raw.githubusercontent.com/scotty-c/lxc-builds/main/sources/conf/functions"
- 
+
     # Install Go
+    if [[ $(uname -i) == x86_64 ]]; then 
+      arch="amd64" 
+    else 
+      arch="arm64" 
+    fi
     gover=1.21.6
     wget https://golang.org/dl/go${gover}.linux-${arch}.tar.gz
     rm -rf /usr/local/go && tar -C /usr/local -xzf go${gover}.linux-${arch}.tar.gz
